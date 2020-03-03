@@ -1,0 +1,145 @@
+[ {
+  "ritual" : "Curse of Millennium Shield",
+  "firstMaterial" : "Prevent Rat",
+  "secondMaterial" : "One-eyed Shield Dragon",
+  "thirdMaterial" : "Armored Rat",
+  "result" : "Millennium Shield"
+}, {
+  "ritual" : "Yamadron Ritual",
+  "firstMaterial" : "Mountain Warrior",
+  "secondMaterial" : "Koumori Dragon",
+  "thirdMaterial" : "Wings of Wicked Flame",
+  "result" : "Yamadron"
+}, {
+  "ritual" : "Gate Guardian Ritual",
+  "firstMaterial" : "Sanga of the Thunder",
+  "secondMaterial" : "Kazejin",
+  "thirdMaterial" : "Suijin",
+  "result" : "Gate Guardian"
+}, {
+  "ritual" : "Black Luster Ritual",
+  "firstMaterial" : "Beaver Warrior",
+  "secondMaterial" : "Gaia the Fierce Knight",
+  "thirdMaterial" : "Kuriboh",
+  "result" : "Black Luster Soldier"
+}, {
+  "ritual" : "Zera Ritual",
+  "firstMaterial" : "King of Yamimakai",
+  "secondMaterial" : "Wicked Dragon with the Ersatz Head",
+  "thirdMaterial" : "Ryu-kishin Powered",
+  "result" : "Zera The Mant"
+}, {
+  "ritual" : "War-lion Ritual",
+  "firstMaterial" : "Frenzied Panda",
+  "secondMaterial" : "Leogun",
+  "thirdMaterial" : "Garvas",
+  "result" : "Super War-lion"
+}, {
+  "ritual" : "Beastry Mirror Ritual",
+  "firstMaterial" : "Fiend Refrection #2",
+  "secondMaterial" : "Wicked Mirror",
+  "thirdMaterial" : "Fiend Refrection #1",
+  "result" : "Fiend's Mirror"
+}, {
+  "ritual" : "Ultimate Dragon",
+  "firstMaterial" : "Blue-eyes White Dragon",
+  "secondMaterial" : "Blue-eyes White Dragon",
+  "thirdMaterial" : "Blue-eyes White Dragon",
+  "result" : "Blue-eyes Ultimate Dragon"
+}, {
+  "ritual" : "Commencement Dance",
+  "firstMaterial" : "Water Omotics",
+  "secondMaterial" : "Dancing Elf",
+  "thirdMaterial" : "Bean Soldier",
+  "result" : "Performance of Sword"
+}, {
+  "ritual" : "Hamburger Recipe",
+  "firstMaterial" : "Battle Steer",
+  "secondMaterial" : "Bio Plant",
+  "thirdMaterial" : "Griggle",
+  "result" : "Hungry Burger"
+}, {
+  "ritual" : "Revival of Sennen Genjin",
+  "firstMaterial" : "Hitotsu-me Giant",
+  "secondMaterial" : "Tiger Axe",
+  "thirdMaterial" : "Millennium Golem",
+  "result" : "Sengenjin"
+}, {
+  "ritual" : "Novox's Prayer",
+  "firstMaterial" : "M-warrior #1",
+  "secondMaterial" : "M-warrior #2",
+  "thirdMaterial" : "Kamakiriman",
+  "result" : "Skull Guardian"
+}, {
+  "ritual" : "Curse of Tri-Horned Dragon",
+  "firstMaterial" : "Feral Imp",
+  "secondMaterial" : "Torike",
+  "thirdMaterial" : "B. Dragon Jungle King",
+  "result" : "Tri-horned Dragon"
+}, {
+  "ritual" : "Revived of Serpent Night Dragon",
+  "firstMaterial" : "Darkfire Dragon",
+  "secondMaterial" : "Dragoness the Wicked Knight",
+  "thirdMaterial" : "Obese Marmot of Nefariousness",
+  "result" : "Serpent Night Dragon"
+}, {
+  "ritual" : "Turtle Oath",
+  "firstMaterial" : "Catapult Turtle",
+  "secondMaterial" : "30,000-Year White Turtle",
+  "thirdMaterial" : "Kanikabuto",
+  "result" : "Crab Turtle"
+}, {
+  "ritual" : "Contruct of Mask",
+  "firstMaterial" : "Mask of Darkness",
+  "secondMaterial" : "Masked Clown",
+  "thirdMaterial" : "Masked Sorcerer",
+  "result" : "Mask of Shine & Dark"
+}, {
+  "ritual" : "Resurrection of Chakra",
+  "firstMaterial" : "Claw Reacher",
+  "secondMaterial" : "Versago the Destroyer",
+  "thirdMaterial" : "Dark Artist",
+  "result" : "Chakra"
+}, {
+  "ritual" : "Puppet Ritual",
+  "firstMaterial" : "Mysterious Puppeteer",
+  "secondMaterial" : "Saber Slasher",
+  "thirdMaterial" : "Blocker",
+  "result" : "Psycho-Puppet"
+}, {
+  "ritual" : "Javelin Beetle Pact",
+  "firstMaterial" : "Hercules Beetle",
+  "secondMaterial" : "Kuwagata a",
+  "thirdMaterial" : "Kwagar Hercules",
+  "result" : "Javelin Beetle"
+}, {
+  "ritual" : "Garma Sword Oath",
+  "firstMaterial" : "Vishwar Randi",
+  "secondMaterial" : "Swordstalker",
+  "thirdMaterial" : "Succubus Knight",
+  "result" : "Garma Sword"
+}, {
+  "ritual" : "Cosmo Queen's Prayer",
+  "firstMaterial" : "Princess of Tsurugi",
+  "secondMaterial" : "Queen's Double",
+  "thirdMaterial" : "Queen of Autumn Leaves",
+  "result" : "Cosmo Queen"
+}, {
+  "ritual" : "Revival of Skeleton Rider",
+  "firstMaterial" : "Temple of Skulls",
+  "secondMaterial" : "Cockroach Knight",
+  "thirdMaterial" : "Korogashi",
+  "result" : "Dokurorider"
+}, {
+  "ritual" : "Fortress Whale's Oath",
+  "firstMaterial" : "White Dolphin",
+  "secondMaterial" : "Mech Bass",
+  "thirdMaterial" : "Misairuzame",
+  "result" : "Fortress Whale"
+}, {
+  "ritual" : "Dark Magic Ritual",
+  "firstMaterial" : "Winged Dragon #1",
+  "secondMaterial" : "Dark Magician",
+  "thirdMaterial" : "Blast Juggler",
+  "result" : "Magician of Black Chaos"
+} ]
