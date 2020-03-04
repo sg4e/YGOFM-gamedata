@@ -21,22 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sg4e.ygofm.gamedata.json;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package sg4e.ygofm.gamedata;
 
 /**
  *
  * @author sg4e
  */
-@Data
-@Setter(AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor
-public class FusionJson {
-    private int firstMaterial, secondMaterial, result;
+public class RNG {
+    /*
+    Quoted from GenericMadScientist in the FM discord:
+    
+    RNG:
+    rand is implemented as follows:
+    int rand(void)
+    {
+        seed = 0x41C64E6D * seed + 0x3039;
+        return (seed >> 16) & 0x7FFF;
+    }
+
+    seed is a 32-bit value whose initial value at game boot is 0x55555555.
+    */
+    
+    private int seed;
+    
+    public RNG() {
+        this(0x55555555);
+    }
+    
+    public RNG(int initialSeed) {
+        this.seed = initialSeed;
+    }
+    
+    public int rand() {
+        seed = 0x41C64E6D * seed + 0x3039;
+        return (seed >> 16) & 0x7FFF;
+    }
+    
 }

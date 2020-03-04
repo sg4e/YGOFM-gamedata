@@ -23,93 +23,37 @@
  */
 package sg4e.ygofm.gamedata;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import sg4e.ygofm.gamedata.json.EquipJson;
 
 /**
  *
  * @author sg4e
  */
 @Getter
-@Setter(AccessLevel.PRIVATE)
 @ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 public class Card {
-    private int id, starchips;
-    private String name, description, type, password;
+    @JsonProperty("CardId")
+    private int id;
+    @JsonProperty("CardName")
+    private String name;
+    @JsonProperty("StarchipCost")
+    private int starchips;
+    private int level, attack, defense;
+    @JsonProperty("GuardianStar1")
+    private GuardianStar firstGuardianStar;
+    @JsonProperty("GuardianStar2")
+    private GuardianStar secondGuardianStar;
+    private String description, type, attribute, password;
     
-    private static final String DEFAULT_CARD_JSON_LOCATION = "json/raw/cards.json";
-    private static final String DEFAULT_EQUIP_JSON_LOCATION = "json/raw/equips.json";
-    public static final Map<Integer,Card> CARD_DB = new HashMap<>();
-    public static final String RITUAL_TYPE = "Ritual";
-    public static final String TRAP_TYPE = "Trap";
-    public static final String MAGIC_TYPE = "Magic";
-    public static final String EQUIP_TYPE = "Equip";
-    public static final Set<String> NON_MONSTER_TYPES = Collections.unmodifiableSet(Stream.of(
-            RITUAL_TYPE,
-            TRAP_TYPE,
-            MAGIC_TYPE,
-            EQUIP_TYPE
-    ).collect(Collectors.toSet()));
-    
-    Card() {
-        
-    }
-    
-    public static void loadCards() {
-        synchronized(CARD_DB) {
-            try {
-                if(CARD_DB.isEmpty()) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode cardArray = mapper.readTree(new File(DEFAULT_CARD_JSON_LOCATION));
-                    cardArray.elements().forEachRemaining(c -> {
-                        try {
-                            Card card;
-                            if(NON_MONSTER_TYPES.contains(c.get("type").asText()))
-                                card = mapper.readValue(c.traverse(), Card.class);
-                            else
-                                card = mapper.readValue(c.traverse(), MonsterCard.class);
-                            CARD_DB.put(card.getId(), card);
-                            }
-                        catch(Throwable thr) {
-                            failLoadCards(thr);
-                        }
-                    });
-                    //load equip data
-                    EquipJson[] equipArray = mapper.readValue(new File(DEFAULT_EQUIP_JSON_LOCATION), EquipJson[].class);
-                    Arrays.stream(equipArray).forEach(equipData -> {
-                        ((MonsterCard)getCardById(equipData.getEquipper())).addEquip(getCardById(equipData.getEquip()));
-                    });
-                }
-            }
-            catch(Throwable thr) {
-                failLoadCards(thr);
-            }
-        }
-    }
-    
-    public static Card getCardById(int id) {
-        if(CARD_DB.isEmpty())
-            loadCards();
-        return CARD_DB.get(id);
-    }
-    
-    private static void failLoadCards(Throwable thr) {
-        thr.printStackTrace();
-        CARD_DB.clear();
+    public boolean canEquip(Card equip, FMDB db) {
+        return db.isEquippable(this, equip);
     }
 }

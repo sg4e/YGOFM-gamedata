@@ -5,3 +5,5 @@
 build
 .nb-gradle-properties
 .nb-gradle/
+nbproject
+json
