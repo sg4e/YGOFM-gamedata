@@ -31,42 +31,53 @@ import java.util.Comparator;
  * @author sg4e
  */
 public class Deck {
+
     private final Card[] cards;
     private int drawIndex;
-    
+
     public static final int DECK_SIZE = 40;
     public static final Comparator<Card> CARD_ID_ORDER = (c1, c2) -> c1.getId() - c2.getId();
-    
+
     public Deck() {
         cards = new Card[DECK_SIZE];
         drawIndex = 0;
     }
-    
+
     public Card draw() {
         return cards[drawIndex++];
     }
-    
+
     public int getDrawIndex() {
         return drawIndex;
     }
-    
+
     public void resetDrawIndex(int newIndex) {
         if(newIndex < 0 || newIndex >= DECK_SIZE) {
             throw new IllegalArgumentException("Invalid drawIndex: " + newIndex);
         }
         drawIndex = newIndex;
     }
-    
+
     public void shuffle(RNG seed, Comparator<? super Card> deckOrderBeforeDuel) {
         /*
         Quoted from GenericMadScientist in the FM discord:
         
         If this is the player's deck, first sort it according to the sort 
         selected for the deck before entering the duel.
-        */
+         */
         Arrays.sort(cards, deckOrderBeforeDuel);
+        shuffle(seed);
+    }
+
+    /**
+     * Shuffles the deck, with its current order as the starting point. Use this
+     * shuffle method for AI decks.
+     *
+     * @param seed
+     */
+    public void shuffle(RNG seed) {
         //the FM shuffle algorithm:
-        for (int i = 0; i < 160; i++) {
+        for(int i = 0; i < 160; i++) {
             int x = seed.rand() % 40;
             int y = seed.rand() % 40;
             Card holder = cards[x];
@@ -74,13 +85,9 @@ public class Deck {
             cards[y] = holder;
         }
     }
-    
-    public void shuffle(RNG seed) {
-        shuffle(seed, CARD_ID_ORDER);
-    }
-    
+
     /**
-     * 
+     *
      * @param duelist
      * @param seed
      * @return an unshuffled deck
@@ -92,8 +99,9 @@ public class Deck {
         while(i < DECK_SIZE) {
             Card dropped = pool.getDrop(seed);
             //decks are limited to 3 copies of a card
-            if(Arrays.stream(deck.cards).filter(c -> c.equals(dropped)).count() < 3L)
+            if(Arrays.stream(deck.cards).filter(c -> c.equals(dropped)).count() < 3L) {
                 deck.cards[i++] = dropped;
+            }
         }
         return deck;
     }
