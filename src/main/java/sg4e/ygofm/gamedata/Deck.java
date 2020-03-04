@@ -88,8 +88,12 @@ public class Deck {
     public static Deck createDuelistDeck(Duelist duelist, RNG seed) {
         Deck deck = new Deck();
         Pool pool = duelist.getPool(Pool.Type.DECK);
-        for(int i = 0; i < DECK_SIZE; i++) {
-            deck.cards[i] = pool.getDrop(seed);
+        int i = 0;
+        while(i < DECK_SIZE) {
+            Card dropped = pool.getDrop(seed);
+            //decks are limited to 3 copies of a card
+            if(Arrays.stream(deck.cards).filter(c -> c.equals(dropped)).count() < 3L)
+                deck.cards[i++] = dropped;
         }
         return deck;
     }
