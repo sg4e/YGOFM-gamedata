@@ -23,20 +23,19 @@
  */
 package sg4e.ygofm.gamedata.json;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
  * @author sg4e
  */
-@Data
-@Setter(AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor
-public class FusionJson {
-    private int firstMaterial, secondMaterial, result;
+public enum PoolType {
+    @JsonProperty("Deck")
+    DECK,
+    @JsonProperty("SAPow")
+    SA_POW,
+    @JsonProperty("BCD")
+    BCD,
+    @JsonProperty("SATec")
+    SA_TEC;
 }

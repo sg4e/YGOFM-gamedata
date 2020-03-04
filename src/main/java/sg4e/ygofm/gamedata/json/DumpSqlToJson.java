@@ -23,6 +23,7 @@
  */
 package sg4e.ygofm.gamedata.json;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlite3.SQLitePlugin;
+import sg4e.ygofm.gamedata.Card;
 
 /**
  *
@@ -66,17 +68,25 @@ public class DumpSqlToJson {
         Map<Integer,DuelistJson> idToDuelist = duelists.stream().collect(Collectors.toMap(DuelistJson::getId, Function.identity()));
         Map<Integer,CardJson> idToCard = cards.stream().collect(Collectors.toMap(CardJson::getId, Function.identity()));
         dropPools = handle.createQuery("SELECT * FROM droppool")
-                .map((rs, ctx) -> new DropPoolJson(rs.getInt("PoolId"), rs.getInt("CardProbability"), idToDuelist.get(rs.getInt("Duelist")).getName(), rs.getString("PoolType"), idToCard.get(rs.getInt("CardId")).getName()))
+                .map((rs, ctx) -> {
+                    try {
+                        return new DropPoolJson(rs.getInt("PoolId"), rs.getInt("Duelist"), rs.getInt("CardId"), rs.getInt("CardProbability"), json.readValue("\"" + rs.getString("PoolType") + "\"", PoolType.class));
+                    }
+                    catch(JsonProcessingException ex) {
+                        ex.printStackTrace();
+                    }
+                    return null;
+                })
                 .list();
         json.writeValue(new File(RAW_PREFIX + "droppools.json"), dropPools);
         
         List<EquipJson> equips = handle.createQuery("SELECT * FROM equipinfo")
-                .map((rs, ctx) -> new EquipJson(idToCard.get(rs.getInt("EquipId")).getName(), idToCard.get(rs.getInt("CardId")).getName()))
+                .map((rs, ctx) -> new EquipJson(rs.getInt("EquipId"), rs.getInt("CardId")))
                 .list();
         json.writeValue(new File(RAW_PREFIX + "equips.json"), equips);
         
         List<FusionJson> fusions = handle.createQuery("SELECT * FROM fusions")
-                .map((rs, ctx) -> new FusionJson(idToCard.get(rs.getInt("Material1")).getName(), idToCard.get(rs.getInt("Material2")).getName(), idToCard.get(rs.getInt("Result")).getName()))
+                .map((rs, ctx) -> new FusionJson(rs.getInt("Material1"), rs.getInt("Material2"), rs.getInt("Result")))
                 .list();
         json.writeValue(new File(RAW_PREFIX + "fusions.json"), fusions);
         
@@ -86,6 +96,9 @@ public class DumpSqlToJson {
         json.writeValue(new File(RAW_PREFIX + "rituals.json"), rituals);
         
         handle.close();
+        
+        Card.loadCards();
+        System.out.println(Card.CARD_DB);
     }
     
 }

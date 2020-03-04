@@ -26,6 +26,7 @@ package sg4e.ygofm.gamedata.json;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -35,6 +36,7 @@ import lombok.Setter;
 @Data
 @Setter(AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class CardJson {
     private int id, level, attack, defense, starchips;
     private String name, description, firstGuardianStar, secondGuardianStar, type, attribute, password;

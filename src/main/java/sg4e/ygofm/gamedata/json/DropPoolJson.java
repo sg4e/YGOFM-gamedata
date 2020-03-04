@@ -26,6 +26,7 @@ package sg4e.ygofm.gamedata.json;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -35,7 +36,8 @@ import lombok.Setter;
 @Data
 @Setter(AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 public class DropPoolJson {
-    private int id, probability; // probability out of 2048
-    private String duelist, type, card;
+    private int id, duelist, card, probability; // probability out of 2048
+    private PoolType type;
 }
