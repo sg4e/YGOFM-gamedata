@@ -23,7 +23,6 @@
  */
 package sg4e.ygofm.gamedata;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collection;
 import java.util.Map;
 import java.util.SortedMap;
@@ -78,6 +77,10 @@ public class Pool {
         }
         //returns null if bugged or if droppool is missing entries
         return null;
+    }
+    
+    public Card getDrop(RNG seed) {
+        return getDrop(seed.rand());
     }
     
     public Entry getEntry(int cardId) {
