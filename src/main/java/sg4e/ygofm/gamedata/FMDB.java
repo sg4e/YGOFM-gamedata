@@ -42,7 +42,7 @@ import org.jdbi.v3.core.Jdbi;
  */
 public class FMDB {
     
-    private static final String SQLITE_PATH = "fm-sqlite3.db";
+    private static final String SQLITE_PATH = "/fm-sqlite3.db";
     
     private final boolean loadDescriptions;
     private final Jdbi jdbi;
@@ -64,7 +64,7 @@ public class FMDB {
     
     private FMDB(boolean loadDescriptions) {
         this.loadDescriptions = loadDescriptions;
-        jdbi = Jdbi.create("jdbc:sqlite:" + SQLITE_PATH);
+        jdbi = Jdbi.create("jdbc:sqlite::resource:" + getClass().getResource(SQLITE_PATH));
         jdbi.registerRowMapper(new RosettaRowMapperFactory());
         handle = jdbi.open();
         cardMap = new HashMap<>();
