@@ -52,9 +52,17 @@ public class RNG {
         this.seed = initialSeed;
     }
     
+    public RNG(RNG toCopy) {
+        this(toCopy.getSeed());
+    }
+    
     public int rand() {
         seed = 0x41C64E6D * seed + 0x3039;
         return (seed >> 16) & 0x7FFF;
+    }
+    
+    public int getSeed() {
+        return seed;
     }
     
 }
