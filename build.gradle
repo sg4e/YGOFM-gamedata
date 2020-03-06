@@ -25,6 +25,9 @@ dependencies {
     
     implementation group: 'com.hubspot.rosetta', name: 'RosettaJdbi3', version: '3.11.9'
     
+    //aparapi (OpenCL support)
+    implementation group: 'com.aparapi', name: 'aparapi', version: '2.0.0'
+    
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'

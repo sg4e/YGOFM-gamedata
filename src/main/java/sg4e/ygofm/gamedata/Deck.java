@@ -23,11 +23,12 @@
  */
 package sg4e.ygofm.gamedata;
 
+import com.aparapi.Kernel;
+import com.aparapi.Range;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -193,23 +194,72 @@ public class Deck {
             throw new IllegalArgumentException("Cards drawn exceeds deck size: " + drawnCards.size());
         //make a copy of the deck and order it to the initial state
         Deck startingDeck = new Deck(this);
+        final short[] orderedDeck = startingDeck.toShortArray();
         startingDeck.sort(initialState);
-        Set<RNG> validSeeds = new HashSet<>();
-        possibleSeeds.forEach(seed -> {
-            /*
-            Quoted from GenericMadScientist in the FM discord:
+        final short[] shortDeck = startingDeck.toShortArray();
+        
+        final int[] positiveInt = new int[1];
+        Kernel kernel = new Kernel() {
+        protected @PrivateMemorySpace(DECK_SIZE) short[] kernelDeck = new short[DECK_SIZE];
+//        @NoCL private static ThreadLocal<short[]> _threadLocalWindow = new ThreadLocal<short[]>() {
+//            @Override
+//            protected short[] initialValue() {
+//               return new short[MAX_WINDOW_SIZE];
+//            }
+//        };
             
-            ORDER OF EVENTS:
-            Shuffle player deck, generate AI deck, shuffle AI deck.
-            */
-            Deck testDeck = new Deck(startingDeck);
-            //make a copy of the initial state of the seed, so we return its pre-shuffle state
-            RNG initialSeed = new RNG(seed);
-            testDeck.shuffle(seed);
-            if(testDeck.startsWith(drawnCards))
-                validSeeds.add(initialSeed);
-        });
-        return validSeeds;
+            @Override
+            public void run() {
+                for(int i = 0; i < DECK_SIZE; i++) {
+                    kernelDeck[i] = shortDeck[i];
+                }
+                int seed = getGlobalId();
+                int untouchedSeed = seed;
+                //shuffle
+                for(int i = 0; i < 160; i++) {
+                    seed = 0x41C64E6D * seed + 0x3039;
+                    int x = ((seed >> 16) & 0x7FFF) % 40;
+                    seed = 0x41C64E6D * seed + 0x3039;
+                    int y = ((seed >> 16) & 0x7FFF) % 40;
+                    short holder = kernelDeck[x];
+                    kernelDeck[x] = kernelDeck[y];
+                    kernelDeck[y] = holder;
+                }
+                //check against deck
+                boolean isGood = true;
+                for(int i = 0; i < DECK_SIZE; i++) {
+                    if(kernelDeck[i] != orderedDeck[i])
+                        isGood = false;
+                }
+                if(isGood)
+                    positiveInt[/*untouchedSeed*/0] = untouchedSeed;
+            }
+        };
+        kernel.execute(Range.create(Integer.MAX_VALUE));
+//        possibleSeeds.forEach(seed -> {
+//            /*
+//            Quoted from GenericMadScientist in the FM discord:
+//            
+//            ORDER OF EVENTS:
+//            Shuffle player deck, generate AI deck, shuffle AI deck.
+//            */
+//            Deck testDeck = new Deck(startingDeck);
+//            //make a copy of the initial state of the seed, so we return its pre-shuffle state
+//            RNG initialSeed = new RNG(seed);
+//            testDeck.shuffle(seed);
+//            if(testDeck.startsWith(drawnCards))
+//                validSeeds.add(initialSeed);
+//        });
+        return Arrays.stream(positiveInt).filter(Objects::nonNull).mapToObj(RNG::new).collect(Collectors.toSet());
+    }
+    
+    private short[] toShortArray() {
+        short[] shortDeck = new short[DECK_SIZE];
+        List<Integer> ids = getRange(0, DECK_SIZE).stream().map(Card::getId).collect(Collectors.toList());
+        for(int i = 0; i < DECK_SIZE; i++) {
+            shortDeck[i] = (short) (int) ids.get(i);
+        }
+        return shortDeck;
     }
     
     public boolean startsWith(List<Card> cards) {
