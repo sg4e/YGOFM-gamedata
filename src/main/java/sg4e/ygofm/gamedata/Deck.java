@@ -133,8 +133,8 @@ public class Deck {
     public void shuffle(RNG seed) {
         //the FM shuffle algorithm:
         for(int i = 0; i < 160; i++) {
-            int x = seed.rand() % 40;
-            int y = seed.rand() % 40;
+            int x = Integer.remainderUnsigned(seed.rand(), 40);
+            int y = Integer.remainderUnsigned(seed.rand(), 40);
             Card holder = cards[x];
             cards[x] = cards[y];
             cards[y] = holder;
