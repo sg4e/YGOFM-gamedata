@@ -58,7 +58,7 @@ public class RNG {
     
     public int rand() {
         seed = 0x41C64E6D * seed + 0x3039;
-        return (seed >> 16) & 0x7FFF;
+        return (seed >>> 16) & 0x7FFF;
     }
     
     public int getSeed() {
