@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -237,5 +238,10 @@ public class Deck {
             }
         }
         return deck;
+    }
+    
+    @Override
+    public String toString() {
+        return "[ " + Arrays.stream(cards).map(Card::getName).collect(Collectors.joining(", ")) + " ]";
     }
 }
