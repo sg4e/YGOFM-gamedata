@@ -55,6 +55,10 @@ public class Duelist {
         return name.getId();
     }
     
+    public boolean isMage() {
+        return name.isMage();
+    }
+    
     public Name getName() {
         return name;
     }
@@ -68,10 +72,10 @@ public class Duelist {
     public static enum Name {
         BANDIT_KEITH(12, 12),
         DARKNITE(37, 20),
-        DESERT_MAGE(27, 14),
+        DESERT_MAGE(27, 14, true),
         DUEL_MASTER_K(39, 15),
-        FOREST_MAGE(23, 14),
-        NEKU(34, 20),
+        FOREST_MAGE(23, 14, true),
+        NEKU(34, 20, true),
         SEBEK(33, 20),
         HEISHIN_1(8, 20),
         HEISHIN_2(35, 20),
@@ -87,10 +91,10 @@ public class Duelist {
         LABYRINTH_MAGE(31, 16),
         MAGE_SOLDIER(18, 12),
         MAI(11, 10),
-        MEADOW_MAGE(29, 14),
-        MOUNTAIN_MAGE(25, 14),
+        MEADOW_MAGE(29, 14, true),
+        MOUNTAIN_MAGE(25, 14, true),
         NITEMARE(38, 20),
-        OCEAN_MAGE(21, 14),
+        OCEAN_MAGE(21, 14, true),
         PEGASUS(15, 16),
         REX(9, 8),
         SETO_1(7, 10),
@@ -107,6 +111,11 @@ public class Duelist {
         BAKURA(14, 14);
         
         private final int id, handSize;
+        private final boolean mage;
+        
+        private Name(int id, int handSize) {
+            this(id, handSize, false);
+        }
     }
     
 }
