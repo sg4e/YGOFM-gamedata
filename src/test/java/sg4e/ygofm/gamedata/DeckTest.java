@@ -25,6 +25,7 @@ package sg4e.ygofm.gamedata;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +37,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import static sg4e.ygofm.gamedata.Deck.*;
 
 /**
  *
@@ -78,8 +80,8 @@ public class DeckTest {
         //get a dump memory dump of a shuffled deck from the game:
         try(Stream<String> stream = Files.lines(Paths.get(getClass().getResource(resourceLocation).toURI()))) {
             List<Card> allCards = stream.map(Integer::parseInt).map(db::getCard).collect(Collectors.toList());
-            playersDeck = new Deck(allCards.subList(0, Deck.DECK_SIZE));
-            aisDeck = new Deck(allCards.subList(Deck.DECK_SIZE, Deck.DECK_SIZE * 2));
+            playersDeck = new Deck(allCards.subList(0, DECK_SIZE));
+            aisDeck = new Deck(allCards.subList(DECK_SIZE, DECK_SIZE * 2));
         }
         catch(Exception ex) {
             fail(ex);
@@ -90,13 +92,13 @@ public class DeckTest {
     @ValueSource(ints = { seed1, seed2 })
     public void testShuffle(int seed) {
         loadDecks(HEISHIN_1_DUEL_RESOURCE);
-        verifyShuffle(seed, Duelist.Name.HEISHIN_1);
+        verifyShuffle(seed, Duelist.Name.HEISHIN_1, CARD_ID_ORDER);
     }
         
-    private void verifyShuffle(int seed, Duelist.Name duelist) {
+    private void verifyShuffle(int seed, Duelist.Name duelist, Comparator<Card> order) {
         RNG realSeed = new RNG(seed);
         Deck regeneratedPlayersDeck = new Deck(playersDeck);
-        regeneratedPlayersDeck.shuffle(realSeed, Deck.CARD_ID_ORDER);
+        regeneratedPlayersDeck.shuffle(realSeed, order);
         Deck generatedAiDeck = Deck.createDuelistDeck(db.getDuelist(duelist), realSeed);
         generatedAiDeck.shuffle(realSeed);
         assertEquals(playersDeck, regeneratedPlayersDeck);
@@ -108,7 +110,7 @@ public class DeckTest {
     public void testSeeds(int confirmedSeed) {
         RNG rng = new RNG();
         int seed = 0;
-        for(int i = 0; i < Deck.SEARCH_SPACE; i++) {
+        for(int i = 0; i < SEARCH_SPACE; i++) {
             rng.rand();
             seed = rng.getSeed();
             if(seed == confirmedSeed)
@@ -120,23 +122,33 @@ public class DeckTest {
     
     @ParameterizedTest
     @MethodSource("provideDeckResources")
-    public void testFindPossibleSeeds(String resource, Duelist.Name duelist) {
+    public void testFindPossibleSeeds(String resource, Duelist.Name duelist, Comparator<Card> sorter) {
         loadDecks(resource);
         //these data were taken from a deck that was sorted by card id before entering the duel,
         //so reconstruct starting state, then determine RNG seed with first 3/4 of deck
-        List<Card> firstThreeQuarters = playersDeck.getRange(0, Deck.DECK_SIZE * 3 / 4);
-        Set<RNG> seeds = playersDeck.findPossibleSeeds(Deck.CARD_ID_ORDER, firstThreeQuarters);
+        List<Card> firstThreeQuarters = playersDeck.getRange(0, DECK_SIZE * 3 / 4);
+        Set<RNG> seeds = playersDeck.findPossibleSeeds(sorter, firstThreeQuarters);
         //seeds.stream().mapToInt(RNG::getSeed).forEach(System.out::println);
         assertEquals(1, seeds.size());
         //now, take the seed and verify it was used to shuffle the player's deck and generate and shuffle ai's deck
         RNG realSeed = seeds.stream().findFirst().get();
-        verifyShuffle(realSeed.getSeed(), duelist);
+        verifyShuffle(realSeed.getSeed(), duelist, sorter);
+    }
+    
+    @ParameterizedTest
+    @MethodSource("provideDeckResources")
+    public void testSortsWithAlternativeDbBuilders(String resource, Duelist.Name duelist, Comparator<Card> sorter) {
+        db = new FMDB.Builder().excludeDescrptions().build();
+        testFindPossibleSeeds(resource, duelist, sorter);
     }
     
     private static Stream<Arguments> provideDeckResources() {
-        return Stream.of(Arguments.of("/villager1.txt", Duelist.Name.VILLAGER_1),
-                Arguments.of("/villager3.txt", Duelist.Name.VILLAGER_3),
-                Arguments.of(HEISHIN_1_DUEL_RESOURCE, Duelist.Name.HEISHIN_1)
+        return Stream.of(Arguments.of("/villager1.txt", Duelist.Name.VILLAGER_1, CARD_ID_ORDER),
+                Arguments.of("/villager3.txt", Duelist.Name.VILLAGER_3, CARD_ID_ORDER),
+                Arguments.of(HEISHIN_1_DUEL_RESOURCE, Duelist.Name.HEISHIN_1, CARD_ID_ORDER),
+                Arguments.of("/seto1-attack-sort.txt", Duelist.Name.SETO_1, ATTACK_ORDER),
+                Arguments.of("/villager1-random-sort-then-id-sort.txt", Duelist.Name.VILLAGER_1, CARD_ID_ORDER),
+                Arguments.of("/heishin1-type-sort-2nd-right.txt", Duelist.Name.HEISHIN_1, TYPE_ORDER)
         );
     }
     

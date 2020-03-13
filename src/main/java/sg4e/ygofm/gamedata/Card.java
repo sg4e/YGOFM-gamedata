@@ -52,6 +52,26 @@ public class Card {
     @JsonProperty("GuardianStar2")
     private GuardianStar secondGuardianStar;
     private String description, type, attribute, password;
+    //values relevant for sorting
+    //UpperCamelCaseStrategy doesn't figure these names out for some reason; might be a rosetta bug
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("AbcSort")
+    private int abcSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("MaxSort")
+    private int maxSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("AtkSort")
+    private int atkSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("DefSort")
+    private int defSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("TypeSort")
+    private int typeSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("AiSort")
+    private int aiSort;
     
     public boolean canEquip(Card equip, FMDB db) {
         return db.isEquippable(this, equip);

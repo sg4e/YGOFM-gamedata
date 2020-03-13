@@ -49,7 +49,14 @@ public class Deck {
      * How many {@code rand()} calls to consider when searching for a seed. Value to be tuned.
      */
     static final int SEARCH_SPACE = 5_000_000;
+    
     public static final Comparator<Card> CARD_ID_ORDER = (c1, c2) -> c1.getId() - c2.getId();
+    public static final Comparator<Card> ALPHABETICAL_ORDER = (c1, c2) -> c1.getAbcSort() - c2.getAbcSort();
+    public static final Comparator<Card> MAX_ORDER = (c1, c2) -> c1.getMaxSort() - c2.getMaxSort();
+    public static final Comparator<Card> ATTACK_ORDER = (c1, c2) -> c1.getAtkSort() - c2.getAtkSort();
+    public static final Comparator<Card> DEFENSE_ORDER = (c1, c2) -> c1.getDefSort() - c2.getDefSort();
+    public static final Comparator<Card> TYPE_ORDER = (c1, c2) -> c1.getTypeSort() - c2.getTypeSort();
+    public static final Comparator<Card> AI_ORDER = (c1, c2) -> c1.getAiSort() - c2.getAiSort();
 
     public Deck() {
         cards = new Card[DECK_SIZE];
