@@ -42,10 +42,11 @@ public class RNG {
     seed is a 32-bit value whose initial value at game boot is 0x55555555.
     */
     
-    private int seed;
+    private int seed, delta;
     
     public RNG() {
         this(0x55555555);
+        delta = 0;
     }
     
     public RNG(int initialSeed) {
@@ -57,12 +58,26 @@ public class RNG {
     }
     
     public synchronized int rand() {
+        delta++;
         seed = 0x41C64E6D * seed + 0x3039;
         return (seed >>> 16) & 0x7FFF;
     }
     
     public synchronized int getSeed() {
         return seed;
+    }
+    
+    public synchronized int getDelta() {
+        return delta;
+    }
+    
+    public static RNG fromDelta(int delta) {
+        //can be implemented via a lookup table for workloads that rather use deltas
+        RNG rng = new RNG();
+        for(int i = 0; i < delta; i++) {
+            rng.rand();
+        }
+        return rng;
     }
     
 }
