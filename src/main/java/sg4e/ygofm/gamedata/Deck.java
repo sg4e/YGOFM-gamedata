@@ -28,9 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -152,39 +150,6 @@ public class Deck {
         }
     }
     
-    private static class Generator implements Iterable<RNG> {
-        
-        private final int startSeed, endSeed;
-        
-        public Generator(int startSeed, int endSeed) {
-            this.startSeed = startSeed;
-            this.endSeed = endSeed;
-        }
-
-        @Override
-        public Iterator<RNG> iterator() {
-            return new Iterator<RNG>() {
-                private int seedInt = startSeed;
-                //have to test for loop around/overflow
-                private boolean started = false;
-
-                @Override
-                public boolean hasNext() {
-                    return !(seedInt == endSeed && started);
-                }
-
-                @Override
-                public RNG next() {
-                    if(!hasNext())
-                        throw new NoSuchElementException();
-                    started = true;
-                    return new RNG(seedInt++);
-                }
-            };
-        }
-        
-    }
-    
     public Set<RNG> findPossibleSeeds(Comparator<? super Card> initialState, List<Card> drawnCards) {
         return findPossibleSeeds(initialState, drawnCards, new RNG());
     }
@@ -198,7 +163,6 @@ public class Deck {
         //copy seed to prevent side effects
         RNG seedCopy = new RNG(baseSeed);
         Set<RNG> validSeeds = Collections.synchronizedSet(new HashSet<>());
-        // TODO have RNG implement Stream (with parallelism) to avoid memory storage
         IntStream.range(0, SEARCH_SPACE).map(i -> {
             seedCopy.rand();
             return seedCopy.getSeed();
