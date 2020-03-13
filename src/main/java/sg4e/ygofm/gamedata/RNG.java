@@ -56,12 +56,12 @@ public class RNG {
         this(toCopy.getSeed());
     }
     
-    public int rand() {
+    public synchronized int rand() {
         seed = 0x41C64E6D * seed + 0x3039;
         return (seed >>> 16) & 0x7FFF;
     }
     
-    public int getSeed() {
+    public synchronized int getSeed() {
         return seed;
     }
     

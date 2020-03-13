@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -45,6 +44,10 @@ public class Deck {
     private final Card[] cards;
 
     public static final int DECK_SIZE = 40;
+    /**
+     * How many {@code rand()} calls to consider when searching for a seed. Value to be tuned.
+     */
+    static final int SEARCH_SPACE = 5_000_000;
     public static final Comparator<Card> CARD_ID_ORDER = (c1, c2) -> c1.getId() - c2.getId();
 
     public Deck() {
@@ -133,8 +136,8 @@ public class Deck {
     public void shuffle(RNG seed) {
         //the FM shuffle algorithm:
         for(int i = 0; i < 160; i++) {
-            int x = Integer.remainderUnsigned(seed.rand(), 40);
-            int y = Integer.remainderUnsigned(seed.rand(), 40);
+            int x = seed.rand() % 40;
+            int y = seed.rand() % 40;
             Card holder = cards[x];
             cards[x] = cards[y];
             cards[y] = holder;
@@ -175,27 +178,23 @@ public class Deck {
     }
     
     public Set<RNG> findPossibleSeeds(Comparator<? super Card> initialState, List<Card> drawnCards) {
-        //create generator for all seeds
-        List<Iterable<RNG>> generators = IntStream.rangeClosed(0x0, 0x10001)
-                .mapToObj(i -> new Generator(0xffff * i, 0xffff * (i+1))).collect(Collectors.toList());
-        //add the edge value
-        generators.add(Collections.singletonList(new RNG(0xffffffff)));
-//        List<Iterable<RNG>> generators = Stream.of(
-//                new Generator(0x0, 0x3fffffff),
-//                new Generator(0x3fffffff, 0x7fffffff),
-//                new Generator(0x7fffffff, 0xafffffff),
-//                new Generator(0xafffffff, 0x0)).collect(Collectors.toList());
-        return generators.parallelStream().map(iter -> findPossibleSeeds(initialState, drawnCards, iter)).flatMap(Set::stream).collect(Collectors.toSet());
+        return findPossibleSeeds(initialState, drawnCards, new RNG());
     }
     
-    public Set<RNG> findPossibleSeeds(Comparator<? super Card> initialState, List<Card> drawnCards, Iterable<RNG> possibleSeeds) {
+    public Set<RNG> findPossibleSeeds(Comparator<? super Card> initialState, List<Card> drawnCards, RNG baseSeed) {
         if(drawnCards.size() > DECK_SIZE)
             throw new IllegalArgumentException("Cards drawn exceeds deck size: " + drawnCards.size());
         //make a copy of the deck and order it to the initial state
         Deck startingDeck = new Deck(this);
         startingDeck.sort(initialState);
-        Set<RNG> validSeeds = new HashSet<>();
-        possibleSeeds.forEach(seed -> {
+        //copy seed to prevent side effects
+        RNG seedCopy = new RNG(baseSeed);
+        Set<RNG> validSeeds = Collections.synchronizedSet(new HashSet<>());
+        // TODO have RNG implement Stream (with parallelism) to avoid memory storage
+        IntStream.range(0, SEARCH_SPACE).map(i -> {
+            seedCopy.rand();
+            return seedCopy.getSeed();
+        }).parallel().forEach(seed -> {
             /*
             Quoted from GenericMadScientist in the FM discord:
             
@@ -203,11 +202,9 @@ public class Deck {
             Shuffle player deck, generate AI deck, shuffle AI deck.
             */
             Deck testDeck = new Deck(startingDeck);
-            //make a copy of the initial state of the seed, so we return its pre-shuffle state
-            RNG initialSeed = new RNG(seed);
-            testDeck.shuffle(seed);
+            testDeck.shuffle(new RNG(seed));
             if(testDeck.startsWith(drawnCards))
-                validSeeds.add(initialSeed);
+                validSeeds.add(new RNG(seed));
         });
         return validSeeds;
     }

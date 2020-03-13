@@ -33,7 +33,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -85,16 +84,27 @@ public class DeckTest {
     }
     
     @Test
-    @Disabled
+    public void testSeeds() {
+        RNG rng = new RNG();
+        int seed = 0;
+        for(int i = 0; i < Deck.SEARCH_SPACE; i++) {
+            rng.rand();
+            seed = rng.getSeed();
+            if(seed == seed1 || seed == seed2)
+                break;
+        }
+        if(seed != seed1 && seed != seed2)
+            fail();
+    }
+    
+    @Test
     public void testFindPossibleSeeds() {
         //these data were taken from a deck that was sorted by card id before entering the duel,
         //so reconstruct starting state, then determine RNG seed with first 3/4 of deck
         List<Card> firstThreeQuarters = playersDeck.getRange(0, Deck.DECK_SIZE * 3 / 4);
-        System.out.println("Searching seeds...");
         Set<RNG> seeds = playersDeck.findPossibleSeeds(Deck.CARD_ID_ORDER, firstThreeQuarters);
         //now, take the seed and verify it was used to shuffle the player's deck and generate and shuffle ai's deck
-        //it's possible that more than seed generates the same outcome
-        //in fact, for this test case, 2 seeds produce the same results, so take one and test
+        assertEquals(1, seeds.size());
         RNG realSeed = seeds.stream().findFirst().get();
         testShuffle(realSeed.getSeed());
     }
