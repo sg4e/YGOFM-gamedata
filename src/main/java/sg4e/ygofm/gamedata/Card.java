@@ -69,9 +69,6 @@ public class Card {
     @Getter(AccessLevel.PACKAGE)
     @JsonProperty("TypeSort")
     private int typeSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("AiSort")
-    private int aiSort;
     
     public boolean canEquip(Card equip, FMDB db) {
         return db.isEquippable(this, equip);

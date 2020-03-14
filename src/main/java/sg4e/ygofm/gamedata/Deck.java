@@ -54,7 +54,6 @@ public class Deck {
     public static final Comparator<Card> ATTACK_ORDER = (c1, c2) -> c1.getAtkSort() - c2.getAtkSort();
     public static final Comparator<Card> DEFENSE_ORDER = (c1, c2) -> c1.getDefSort() - c2.getDefSort();
     public static final Comparator<Card> TYPE_ORDER = (c1, c2) -> c1.getTypeSort() - c2.getTypeSort();
-    public static final Comparator<Card> AI_ORDER = (c1, c2) -> c1.getAiSort() - c2.getAiSort();
 
     public Deck() {
         cards = new Card[DECK_SIZE];

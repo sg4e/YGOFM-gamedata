@@ -80,7 +80,7 @@ public class FMDB {
         return cardMap.computeIfAbsent(id, (i) -> {
             String query = String.format("SELECT %s FROM cardinfo WHERE CardId = :id", loadDescriptions ? "*" : 
                     "CardId, CardName, GuardianStar1, GuardianStar2, Level, Type, Attack, Defense, Attribute, Password, StarchipCost, "
-                    + "AbcSort, MaxSort, AtkSort, DefSort, TypeSort, AiSort");
+                    + "AbcSort, MaxSort, AtkSort, DefSort, TypeSort");
             return handle.createQuery(query)
                     .bind("id", id)
                     .mapTo(Card.class)
