@@ -23,6 +23,9 @@
  */
 package sg4e.ygofm.gamedata;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,6 +70,15 @@ public class FMDBTest {
         assertNull(c.getDescription());
         checkBlueEyes(c);
         db2.close();
+    }
+    
+    @Test
+    public void testGetAllCards() {
+        Map<Integer,Card> cardMap = db.getAllCards().stream().collect(Collectors.toMap(Card::getId, Function.identity()));
+        //test some arbitrary cards
+        assertEquals("Mystical Sand", cardMap.get(531).getName());
+        assertEquals("Nekogal #2", cardMap.get(627).getName());
+        assertEquals("Nemuriko", cardMap.get(129).getName());
     }
     
     private void checkBlueEyes(Card c) {

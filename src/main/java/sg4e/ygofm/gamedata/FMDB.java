@@ -27,10 +27,12 @@ import com.hubspot.rosetta.jdbi3.RosettaRowMapperFactory;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.jdbi.v3.core.Handle;
@@ -47,7 +49,7 @@ public class FMDB {
     private final boolean loadDescriptions;
     private final Jdbi jdbi;
     private final Handle handle;
-    private final Map<Integer,Card> cardMap;
+    private Map<Integer,Card> cardMap;
     private final Map<CardPair,Card> fusionCache;
     private final Map<Duelist.Name,Duelist> duelistMap;
     
@@ -67,7 +69,7 @@ public class FMDB {
         jdbi = Jdbi.create("jdbc:sqlite::resource:" + getClass().getResource(SQLITE_PATH));
         jdbi.registerRowMapper(new RosettaRowMapperFactory());
         handle = jdbi.open();
-        cardMap = new HashMap<>();
+        cardMap = null;
         fusionCache = new HashMap<>();
         duelistMap = new HashMap<>();
     }
@@ -77,15 +79,24 @@ public class FMDB {
     }
     
     public Card getCard(int id) {
-        return cardMap.computeIfAbsent(id, (i) -> {
-            String query = String.format("SELECT %s FROM cardinfo WHERE CardId = :id", loadDescriptions ? "*" : 
-                    "CardId, CardName, GuardianStar1, GuardianStar2, Level, Type, Attack, Defense, Attribute, Password, StarchipCost, "
-                    + "AbcSort, MaxSort, AtkSort, DefSort, TypeSort");
-            return handle.createQuery(query)
-                    .bind("id", id)
-                    .mapTo(Card.class)
-                    .one();
-        });
+        if(cardMap == null)
+            loadCards();
+        return cardMap.get(id);
+    }
+    
+    public Set<Card> getAllCards() {
+        if(cardMap == null)
+            loadCards();
+        return new HashSet<>(cardMap.values());
+    }
+    
+    private void loadCards() {
+        String query = String.format("SELECT %s FROM cardinfo", loadDescriptions ? "*" : 
+                "CardId, CardName, GuardianStar1, GuardianStar2, Level, Type, Attack, Defense, Attribute, Password, StarchipCost, "
+                + "AbcSort, MaxSort, AtkSort, DefSort, TypeSort");
+        cardMap = handle.createQuery(query)
+                .mapTo(Card.class)
+                .collect(Collectors.toMap(Card::getId, Function.identity()));
     }
     
     public Duelist getDuelist(Duelist.Name name) {
