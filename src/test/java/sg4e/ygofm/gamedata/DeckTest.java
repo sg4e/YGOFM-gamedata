@@ -25,6 +25,7 @@ package sg4e.ygofm.gamedata;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -161,6 +162,19 @@ public class DeckTest {
     @Test
     public void testSortsPrettyPrint() {
         assertEquals(Deck.ALPHABETICAL_ORDER.toString(), "Alphabetical Sort");
+    }
+    
+    @Test
+    public void testToList() {
+        List<Card> cards = new ArrayList<>();
+        for(int i = 1; i <= Deck.DECK_SIZE; i++) {
+            cards.add(db.getCard(i));
+        }
+        Deck deck = new Deck(cards);
+        assertEquals(cards, deck.toList());
+        //assert internal array is not editable
+        cards.remove(0);
+        assertNotEquals(cards, deck.toList());
     }
     
 }

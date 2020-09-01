@@ -120,6 +120,11 @@ public class Deck {
             throw new IllegalArgumentException(String.format("Starting index %s > ending index %s", start, end));
         return Arrays.asList(Arrays.copyOfRange(cards, start, end));
     }
+    
+    public List<Card> toList() {
+        //Arrays.asList doesn't create a copy; guard against external editing of internal array
+        return new ArrayList<>(Arrays.asList(cards));
+    }
 
     @Override
     public int hashCode() {
