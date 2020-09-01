@@ -23,6 +23,7 @@
  */
 package sg4e.ygofm.gamedata;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import lombok.AllArgsConstructor;
 
 /**
  *
@@ -48,12 +50,39 @@ public class Deck {
      */
     static final int SEARCH_SPACE = 5_000_000;
     
-    public static final Comparator<Card> CARD_ID_ORDER = (c1, c2) -> c1.getId() - c2.getId();
-    public static final Comparator<Card> ALPHABETICAL_ORDER = (c1, c2) -> c1.getAbcSort() - c2.getAbcSort();
-    public static final Comparator<Card> MAX_ORDER = (c1, c2) -> c1.getMaxSort() - c2.getMaxSort();
-    public static final Comparator<Card> ATTACK_ORDER = (c1, c2) -> c1.getAtkSort() - c2.getAtkSort();
-    public static final Comparator<Card> DEFENSE_ORDER = (c1, c2) -> c1.getDefSort() - c2.getDefSort();
-    public static final Comparator<Card> TYPE_ORDER = (c1, c2) -> c1.getTypeSort() - c2.getTypeSort();
+    @AllArgsConstructor
+    private static class ComparatorStringDecorator<T> implements Comparator<T> {
+        
+        private final Comparator<T> comparator;
+        private final String string;
+
+        @Override
+        public int compare(T o1, T o2) {
+            return comparator.compare(o1, o2);
+        }
+
+        @Override
+        public String toString() {
+            return string;
+        }
+        
+    }
+    
+    public static final Comparator<Card> CARD_ID_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getId() - c2.getId(), "ID Sort");
+    public static final Comparator<Card> ALPHABETICAL_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getAbcSort() - c2.getAbcSort(), "Alphabetical Sort");
+    public static final Comparator<Card> MAX_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getMaxSort() - c2.getMaxSort(), "Max Sort");
+    public static final Comparator<Card> ATTACK_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getAtkSort() - c2.getAtkSort(), "Attack Sort");
+    public static final Comparator<Card> DEFENSE_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getDefSort() - c2.getDefSort(), "Defense Sort");
+    public static final Comparator<Card> TYPE_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getTypeSort() - c2.getTypeSort(), "Type Sort");
+    private static final List<Comparator<Card>> SORTS = new ArrayList<>(6);
+    static {
+        SORTS.add(CARD_ID_ORDER);
+        SORTS.add(ALPHABETICAL_ORDER);
+        SORTS.add(MAX_ORDER);
+        SORTS.add(ATTACK_ORDER);
+        SORTS.add(DEFENSE_ORDER);
+        SORTS.add(TYPE_ORDER);
+    }
 
     public Deck() {
         cards = new Card[DECK_SIZE];
@@ -208,6 +237,10 @@ public class Deck {
             }
         }
         return deck;
+    }
+    
+    public static List<Comparator<Card>> getAllSorts() {
+        return new ArrayList<>(SORTS);
     }
     
     @Override

@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -150,6 +151,16 @@ public class DeckTest {
                 Arguments.of("/villager1-random-sort-then-id-sort.txt", Duelist.Name.VILLAGER_1, CARD_ID_ORDER),
                 Arguments.of("/heishin1-type-sort-2nd-right.txt", Duelist.Name.HEISHIN_1, TYPE_ORDER)
         );
+    }
+    
+    @Test
+    public void testGetAllSorts() {
+        assertEquals(6, Deck.getAllSorts().size());
+    }
+    
+    @Test
+    public void testSortsPrettyPrint() {
+        assertEquals(Deck.ALPHABETICAL_ORDER.toString(), "Alphabetical Sort");
     }
     
 }
