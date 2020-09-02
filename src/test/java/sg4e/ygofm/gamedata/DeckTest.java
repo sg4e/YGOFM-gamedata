@@ -94,10 +94,11 @@ public class DeckTest {
     @ValueSource(ints = { seed1, seed2 })
     public void testShuffle(int seed) {
         loadDecks(HEISHIN_1_DUEL_RESOURCE);
-        verifyShuffle(seed, Duelist.Name.HEISHIN_1, CARD_ID_ORDER);
+        //delta doesn't matter for this test
+        verifyShuffle(new RNG(seed, 0), Duelist.Name.HEISHIN_1, CARD_ID_ORDER);
     }
         
-    private void verifyShuffle(int seed, Duelist.Name duelist, Comparator<Card> order) {
+    private void verifyShuffle(RNG seed, Duelist.Name duelist, Comparator<Card> order) {
         RNG realSeed = new RNG(seed);
         Deck regeneratedPlayersDeck = new Deck(playersDeck);
         regeneratedPlayersDeck.shuffle(realSeed, order);
@@ -134,7 +135,7 @@ public class DeckTest {
         assertEquals(1, seeds.size());
         //now, take the seed and verify it was used to shuffle the player's deck and generate and shuffle ai's deck
         RNG realSeed = seeds.stream().findFirst().get();
-        verifyShuffle(realSeed.getSeed(), duelist, sorter);
+        verifyShuffle(realSeed, duelist, sorter);
     }
     
     @ParameterizedTest
