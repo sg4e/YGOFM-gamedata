@@ -80,11 +80,11 @@ public class SeedSearch {
                 testDeck.shuffle(new RNG(seed));
                 if(testDeck.startsWith(drawnCards)) {
                     validSeeds.add(new RNG(seed));
-                    hitCallback.accept(new RNG(seed));
+                    if(hitCallback != null)
+                        hitCallback.accept(new RNG(seed));
                 }
-                if(iterCallback != null) {
+                if(iterCallback != null)
                     iterCallback.run();
-                }
             }
         });
         return validSeeds;
