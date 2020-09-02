@@ -74,7 +74,12 @@ public class Deck {
     public static final Comparator<Card> ATTACK_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getAtkSort() - c2.getAtkSort(), "Attack Sort");
     public static final Comparator<Card> DEFENSE_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getDefSort() - c2.getDefSort(), "Defense Sort");
     public static final Comparator<Card> TYPE_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getTypeSort() - c2.getTypeSort(), "Type Sort");
-    private static final List<Comparator<Card>> SORTS = new ArrayList<>(6);
+    public static final Comparator<Card> JAPANESE_ALPHABETICAL_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getJpAbcSort() - c2.getJpAbcSort(), "Japanese Alphabetical Sort");
+    public static final Comparator<Card> JAPANESE_MAX_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getJpMaxSort() - c2.getJpMaxSort(), "Japanese Max Sort");
+    public static final Comparator<Card> JAPANESE_ATTACK_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getJpAtkSort() - c2.getJpAtkSort(), "Japanese Attack Sort");
+    public static final Comparator<Card> JAPANESE_DEFENSE_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getJpDefSort() - c2.getJpDefSort(), "Japanese Defense Sort");
+    public static final Comparator<Card> JAPANESE_TYPE_ORDER = new ComparatorStringDecorator<>((c1, c2) -> c1.getJpTypeSort() - c2.getJpTypeSort(), "Japanese Type Sort");
+    private static final List<Comparator<Card>> SORTS = new ArrayList<>(11);
     static {
         SORTS.add(CARD_ID_ORDER);
         SORTS.add(ALPHABETICAL_ORDER);
@@ -82,6 +87,11 @@ public class Deck {
         SORTS.add(ATTACK_ORDER);
         SORTS.add(DEFENSE_ORDER);
         SORTS.add(TYPE_ORDER);
+        SORTS.add(JAPANESE_ALPHABETICAL_ORDER);
+        SORTS.add(JAPANESE_MAX_ORDER);
+        SORTS.add(JAPANESE_ATTACK_ORDER);
+        SORTS.add(JAPANESE_DEFENSE_ORDER);
+        SORTS.add(JAPANESE_TYPE_ORDER);
     }
 
     public Deck() {

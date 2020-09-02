@@ -157,7 +157,7 @@ public class DeckTest {
     
     @Test
     public void testGetAllSorts() {
-        assertEquals(6, Deck.getAllSorts().size());
+        assertEquals(11, Deck.getAllSorts().size());
     }
     
     @Test
@@ -176,6 +176,21 @@ public class DeckTest {
         //assert internal array is not editable
         cards.remove(0);
         assertNotEquals(cards, deck.toList());
+    }
+    
+    @Test
+    public void testJpSorts() {
+        List<Card> cards = new ArrayList<>();
+        cards.add(db.getCard(1));
+        cards.add(db.getCard(2));
+        cards.add(db.getCard(3));
+        cards.add(db.getCard(4));
+        
+        cards.sort(Deck.JAPANESE_ALPHABETICAL_ORDER);
+        assertEquals(db.getCard(3), cards.get(0));
+        assertEquals(db.getCard(1), cards.get(1));
+        assertEquals(db.getCard(4), cards.get(2));
+        assertEquals(db.getCard(2), cards.get(3));
     }
     
 }

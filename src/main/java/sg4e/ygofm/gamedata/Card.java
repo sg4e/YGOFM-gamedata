@@ -69,6 +69,22 @@ public class Card {
     @Getter(AccessLevel.PACKAGE)
     @JsonProperty("TypeSort")
     private int typeSort;
+    //Japanese sort values
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("JpAbcSort")
+    private int jpAbcSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("JpMaxSort")
+    private int jpMaxSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("JpAtkSort")
+    private int jpAtkSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("JpDefSort")
+    private int jpDefSort;
+    @Getter(AccessLevel.PACKAGE)
+    @JsonProperty("JpTypeSort")
+    private int jpTypeSort;
     
     public boolean canEquip(Card equip, FMDB db) {
         return db.isEquippable(this, equip);
