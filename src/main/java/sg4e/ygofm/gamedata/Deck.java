@@ -196,9 +196,9 @@ public class Deck {
         //copy seed to prevent side effects
         RNG seedCopy = new RNG(baseSeed);
         Set<RNG> validSeeds = Collections.synchronizedSet(new HashSet<>());
-        IntStream.range(0, SEARCH_SPACE).map(i -> {
+        IntStream.range(0, SEARCH_SPACE).mapToObj(i -> {
             seedCopy.rand();
-            return seedCopy.getSeed();
+            return new RNG(seedCopy);
         }).parallel().forEach(seed -> {
             /*
             Quoted from GenericMadScientist in the FM discord:

@@ -45,16 +45,16 @@ public class RNG {
     private int seed, delta;
     
     public RNG() {
-        this(0x55555555);
-        delta = 0;
+        this(0x55555555, 0);
     }
     
-    public RNG(int initialSeed) {
+    public RNG(int initialSeed, int delta) {
         this.seed = initialSeed;
+        this.delta = delta;
     }
     
     public RNG(RNG toCopy) {
-        this(toCopy.getSeed());
+        this(toCopy.getSeed(), toCopy.getDelta());
     }
     
     public synchronized int rand() {
