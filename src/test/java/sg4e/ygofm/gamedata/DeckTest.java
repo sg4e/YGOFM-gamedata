@@ -113,7 +113,7 @@ public class DeckTest {
     public void testSeeds(int confirmedSeed) {
         RNG rng = new RNG();
         int seed = 0;
-        for(int i = 0; i < SEARCH_SPACE; i++) {
+        for(int i = 0; i < SeedSearch.DEFAULT_SEARCH_SPACE; i++) {
             rng.rand();
             seed = rng.getSeed();
             if(seed == confirmedSeed)
@@ -130,8 +130,10 @@ public class DeckTest {
         //these data were taken from a deck that was sorted by card id before entering the duel,
         //so reconstruct starting state, then determine RNG seed with first 3/4 of deck
         List<Card> firstThreeQuarters = playersDeck.getRange(0, DECK_SIZE * 3 / 4);
-        Set<RNG> seeds = playersDeck.findPossibleSeeds(sorter, firstThreeQuarters);
-        //seeds.stream().mapToInt(RNG::getSeed).forEach(System.out::println);
+        Set<RNG> seeds = new SeedSearch.Builder(playersDeck, firstThreeQuarters)
+                .withSort(sorter)
+                .build()
+                .search();
         assertEquals(1, seeds.size());
         //now, take the seed and verify it was used to shuffle the player's deck and generate and shuffle ai's deck
         RNG realSeed = seeds.stream().findFirst().get();

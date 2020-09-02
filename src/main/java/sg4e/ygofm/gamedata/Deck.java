@@ -26,14 +26,10 @@ package sg4e.ygofm.gamedata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 
 /**
@@ -45,10 +41,6 @@ public class Deck {
     private final Card[] cards;
 
     public static final int DECK_SIZE = 40;
-    /**
-     * How many {@code rand()} calls to consider when searching for a seed. Value to be tuned.
-     */
-    static final int SEARCH_SPACE = 5_000_000;
     
     @AllArgsConstructor
     private static class ComparatorStringDecorator<T> implements Comparator<T> {
@@ -191,37 +183,6 @@ public class Deck {
             cards[x] = cards[y];
             cards[y] = holder;
         }
-    }
-    
-    public Set<RNG> findPossibleSeeds(Comparator<? super Card> initialState, List<Card> drawnCards) {
-        return findPossibleSeeds(initialState, drawnCards, new RNG());
-    }
-    
-    public Set<RNG> findPossibleSeeds(Comparator<? super Card> initialState, List<Card> drawnCards, RNG baseSeed) {
-        if(drawnCards.size() > DECK_SIZE)
-            throw new IllegalArgumentException("Cards drawn exceeds deck size: " + drawnCards.size());
-        //make a copy of the deck and order it to the initial state
-        Deck startingDeck = new Deck(this);
-        startingDeck.sort(initialState);
-        //copy seed to prevent side effects
-        RNG seedCopy = new RNG(baseSeed);
-        Set<RNG> validSeeds = Collections.synchronizedSet(new HashSet<>());
-        IntStream.range(0, SEARCH_SPACE).mapToObj(i -> {
-            seedCopy.rand();
-            return new RNG(seedCopy);
-        }).parallel().forEach(seed -> {
-            /*
-            Quoted from GenericMadScientist in the FM discord:
-            
-            ORDER OF EVENTS:
-            Shuffle player deck, generate AI deck, shuffle AI deck.
-            */
-            Deck testDeck = new Deck(startingDeck);
-            testDeck.shuffle(new RNG(seed));
-            if(testDeck.startsWith(drawnCards))
-                validSeeds.add(new RNG(seed));
-        });
-        return validSeeds;
     }
     
     public boolean startsWith(List<Card> cards) {
