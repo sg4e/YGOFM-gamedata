@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
+import lombok.Getter;
 
 /**
  *
@@ -45,7 +46,10 @@ public class SeedSearch {
      * How many {@code rand()} calls to consider when searching for a seed. Value to be tuned.
      */
     public static final int DEFAULT_SEARCH_SPACE = 5_000_000;
-    private int space = DEFAULT_SEARCH_SPACE;
+    @Getter
+    private int spaceStart = 0;
+    @Getter
+    private int spaceEnd = DEFAULT_SEARCH_SPACE;
     private Runnable iterCallback = null;
     private Consumer<RNG> hitCallback = null;
     private RNG initialSeed = new RNG();
@@ -65,7 +69,11 @@ public class SeedSearch {
         //copy seed to prevent side effects
         RNG seedCopy = new RNG(initialSeed);
         Set<RNG> validSeeds = Collections.synchronizedSet(new HashSet<>());
-        IntStream.range(0, space).mapToObj(i -> {
+        //go to offset if not starting at initial seed
+        for(int i = 0; i < spaceStart; i++) {
+            seedCopy.rand();
+        }
+        IntStream.range(0, spaceEnd - spaceStart).mapToObj(i -> {
             seedCopy.rand();
             return new RNG(seedCopy);
         }).parallel().forEach(seed -> {
@@ -94,8 +102,8 @@ public class SeedSearch {
         cancel = true;
     }
     
-    public int getSpace() {
-        return space;
+    public int getSpaceLength() {
+        return spaceEnd - spaceStart;
     }
     
     public static class Builder {
@@ -112,9 +120,18 @@ public class SeedSearch {
             return this;
         }
         
-        public Builder withSpace(int searchSpace) {
+        public Builder withSpace(int end) {
+            return withSpace(0, end);
+        }
+        
+        public Builder withSpace(int start, int end) {
             check();
-            search.space = searchSpace;
+            if(start > end) {
+                //rather than flip these, throw an exception because it's likely the calling code has a mistake and the author would want to know
+                throw new IllegalArgumentException(String.format("Start value %d is greater than end value %d", start, end));
+            }
+            search.spaceStart = start;
+            search.spaceEnd = end;
             return this;
         }
         
