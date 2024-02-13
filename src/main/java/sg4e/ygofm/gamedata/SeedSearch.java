@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -81,7 +82,7 @@ public class SeedSearch {
         IntStream.range(0, spaceEnd - spaceStart).mapToObj(i -> {
             seedCopy.rand();
             return new RNG(seedCopy);
-        }).parallel().forEach(seed -> {
+        }).collect(Collectors.toList()).stream().parallel().forEach(seed -> {
             if(!cancel) {
                 /*
                 Quoted from GenericMadScientist in the FM discord:
