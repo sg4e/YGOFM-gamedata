@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,8 @@ package sg4e.ygofm.gamedata;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+
 /**
  *
  * @author sg4e
@@ -34,7 +36,7 @@ public class DuelistTest {
 
     @Test
     public void testToString() {
-        Duelist mageSoldier = new Duelist(Duelist.Name.MAGE_SOLDIER);
+        Duelist mageSoldier = new Duelist(Duelist.Name.MAGE_SOLDIER, new HashMap<>());
         assertEquals("Mage Soldier", mageSoldier.toString());
     }
     

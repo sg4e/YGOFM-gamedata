@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,7 @@
  */
 package sg4e.ygofm.gamedata;
 
-import java.util.HashMap;
 import java.util.Map;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  *
@@ -38,13 +34,9 @@ public class Duelist {
     private final Name name;
     private final Map<Pool.Type, Pool> pools;
     
-    Duelist(Name name) {
+    Duelist(Name name, Map<Pool.Type, Pool> pools) {
         this.name = name;
-        pools = new HashMap<>();
-    }
-    
-    void addPool(Pool.Type type, Pool pool) {
-        pools.put(type, pool);
+        this.pools = pools;
     }
     
     public int getHandSize() {
@@ -55,8 +47,25 @@ public class Duelist {
         return name.getId();
     }
     
-    public boolean isMage() {
+    public boolean isEitherMage() {
         return name.isMage();
+    }
+
+    public boolean isLowMage() {
+        return name.isLowMage();
+    }
+
+    public boolean isHighMage() {
+        return name.isHighMage();
+    }
+
+    public boolean hasMageAggressiveFieldAi() {
+        if(name == Name.LABYRINTH_MAGE)
+            return false;
+        else if(name == Name.NEKU)
+            return true;
+        else
+            return isLowMage();
     }
     
     public Name getName() {
@@ -72,8 +81,6 @@ public class Duelist {
         return getName().toString();
     }
     
-    @Getter(AccessLevel.PRIVATE)
-    @AllArgsConstructor
     public static enum Name {
         SIMON(1, 5, "Simon Muran"),
         TEANA_1(2, 5, "Teana"),
@@ -95,20 +102,20 @@ public class Duelist {
         MAGE_SOLDIER(18, 12, "Mage Soldier"),
         JONO_2(19, 10, "Jono 2nd"),
         TEANA_2(20, 10, "Teana 2nd"),
-        OCEAN_MAGE(21, 14, "Ocean Mage", true),
-        SECMETON(22, 16, "High Mage Secmeton"),
-        FOREST_MAGE(23, 14, "Forest Mage", true),
-        ANUBISIUS(24, 16, "High Mage Anubisius"),
-        MOUNTAIN_MAGE(25, 14, "Mountain Mage", true),
-        ATENZA(26, 16, "High Mage Atenza"),
-        DESERT_MAGE(27, 14, "Desert Mage", true),
-        MARTIS(28, 16, "High Mage Martis"),
-        MEADOW_MAGE(29, 14, "Meadow Mage", true),
-        KEPURA(30, 16, "High Mage Kepura"),
-        LABYRINTH_MAGE(31, 16, "Labyrinth Mage"),
+        OCEAN_MAGE(21, 14, "Ocean Mage", true, false),
+        SECMETON(22, 16, "High Mage Secmeton", false, true),
+        FOREST_MAGE(23, 14, "Forest Mage", true, false),
+        ANUBISIUS(24, 16, "High Mage Anubisius", false, true),
+        MOUNTAIN_MAGE(25, 14, "Mountain Mage", true, false),
+        ATENZA(26, 16, "High Mage Atenza", false, true),
+        DESERT_MAGE(27, 14, "Desert Mage", true, false),
+        MARTIS(28, 16, "High Mage Martis", false, true),
+        MEADOW_MAGE(29, 14, "Meadow Mage", true, false),
+        KEPURA(30, 16, "High Mage Kepura", false, true),
+        LABYRINTH_MAGE(31, 16, "Labyrinth Mage", true, false),
         SETO_2(32, 18, "Seto 2nd"),
         SEBEK(33, 20, "Guardian Sebek"),
-        NEKU(34, 20, "Guardian Neku", true),
+        NEKU(34, 20, "Guardian Neku"),
         HEISHIN_2(35, 20, "Heishin 2nd"),
         SETO_3(36, 20, "Seto 3rd"),
         DARKNITE(37, 20, "DarkNite"),
@@ -117,10 +124,42 @@ public class Duelist {
         
         private final int id, handSize;
         private final String pretty;
-        private final boolean mage;
+        private final boolean lowMage, highMage;
         
         private Name(int id, int handSize, String pretty) {
-            this(id, handSize, pretty, false);
+            this(id, handSize, pretty, false, false);
+        }
+
+        private Name(int id, int handSize, String pretty, boolean isLowMage, boolean isHighMage) {
+            this.id = id;
+            this.handSize = handSize;
+            this.pretty = pretty;
+            this.lowMage = isLowMage;
+            this.highMage = isHighMage;
+        }
+
+        int getId() {
+            return id;
+        }
+
+        private int getHandSize() {
+            return handSize;
+        }
+
+        private String getPretty() {
+            return pretty;
+        }
+
+        private boolean isMage() {
+            return lowMage || highMage;
+        }
+
+        private boolean isLowMage() {
+            return lowMage;
+        }
+
+        private boolean isHighMage() {
+            return highMage;
         }
 
         @Override

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,19 @@
  */
 package sg4e.ygofm.gamedata;
 
-import com.hubspot.rosetta.jdbi3.RosettaRowMapperFactory;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.jdbi.v3.core.Handle;
-import org.jdbi.v3.core.Jdbi;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -44,14 +43,11 @@ import org.jdbi.v3.core.Jdbi;
  */
 public class FMDB {
     
-    private static final String SQLITE_PATH = "/fm-sqlite3.db";
-    
-    private final boolean loadDescriptions;
-    private final Jdbi jdbi;
-    private final Handle handle;
-    private Map<Integer,Card> cardMap;
-    private final Map<CardPair,Card> fusionCache;
-    private final Map<Duelist.Name,Duelist> duelistMap;
+    private final Map<Integer,Card> cardMap;
+    private final Map<Integer,Duelist> duelistMap;
+    // first card id -> second card id -> result card
+    private final Map<Integer,Map<Integer,Card>> fusionMap;
+    private final Map<Integer,Set<Integer>> equipMap;
     
     public static final String RITUAL_TYPE = "Ritual";
     public static final String TRAP_TYPE = "Trap";
@@ -63,107 +59,118 @@ public class FMDB {
             MAGIC_TYPE,
             EQUIP_TYPE
     ).collect(Collectors.toSet()));
+
+    private static FMDB singleton;
     
-    private FMDB(boolean loadDescriptions) {
-        this.loadDescriptions = loadDescriptions;
-        jdbi = Jdbi.create("jdbc:sqlite::resource:" + getClass().getResource(SQLITE_PATH));
-        jdbi.registerRowMapper(new RosettaRowMapperFactory());
-        handle = jdbi.open();
-        cardMap = null;
-        fusionCache = new HashMap<>();
-        duelistMap = new HashMap<>();
-    }
-    
-    public void close() {
-        handle.close();
+    private FMDB() {
+        ObjectMapper jsonMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        jsonMapper.findAndRegisterModules();
+        List<Card> cardList;
+        List<JsonPool> rawPools;
+        List<JsonFusion> rawFusions;
+        List<JsonEquip> rawEquips;
+        try {
+            cardList = jsonMapper.readValue(getClass().getResourceAsStream("/cardinfo.json"),
+                new TypeReference<List<Card>>(){});
+            rawPools = jsonMapper.readValue(getClass().getResourceAsStream("/droppool.json"),
+                new TypeReference<List<JsonPool>>(){});
+            rawFusions = jsonMapper.readValue(getClass().getResourceAsStream("/fusions.json"),
+                new TypeReference<List<JsonFusion>>(){});
+            rawEquips = jsonMapper.readValue(getClass().getResourceAsStream("/equipinfo.json"),
+                new TypeReference<List<JsonEquip>>(){});
+        }
+        catch(Exception e) {
+            throw new RuntimeException("Failed to load FM database info from JSON files", e);
+        }
+        cardMap = cardList.stream().collect(Collectors.toMap(Card::id, Function.identity()));
+        Map<Integer,List<JsonPool>> duelistIdToPools = rawPools.stream().collect(Collectors.groupingBy(JsonPool::duelist));
+        Map<Integer,Duelist.Name> idToName = Arrays.stream(Duelist.Name.values()).collect(Collectors.toMap(Duelist.Name::getId, Function.identity()));
+        duelistMap = duelistIdToPools.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                e -> new Duelist(idToName.get(e.getKey()), e.getValue().stream().collect(
+                    Collectors.groupingBy(JsonPool::type)).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    e2 -> new Pool(e2.getValue().stream().map(p -> new Pool.Entry(cardMap.get(p.cardId()), p.probability())).collect(Collectors.toList())))))));
+        fusionMap = rawFusions.stream().collect(Collectors.groupingBy(JsonFusion::material1, Collectors.toMap(JsonFusion::material2, i -> cardMap.get(i.result()))));
+        equipMap = rawEquips.stream().collect(Collectors.groupingBy(JsonEquip::equipId, Collectors.mapping(JsonEquip::cardId, Collectors.toSet())));
     }
     
     public Card getCard(int id) {
-        if(cardMap == null)
-            loadCards();
         return cardMap.get(id);
     }
     
     public Set<Card> getAllCards() {
-        if(cardMap == null)
-            loadCards();
         return new HashSet<>(cardMap.values());
     }
     
-    private void loadCards() {
-        String query = String.format("SELECT %s FROM cardinfo", loadDescriptions ? "*" : 
-                "CardId, CardName, GuardianStar1, GuardianStar2, Level, Type, Attack, Defense, Attribute, Password, StarchipCost, "
-                + "AbcSort, MaxSort, AtkSort, DefSort, TypeSort");
-        cardMap = handle.createQuery(query)
-                .mapTo(Card.class)
-                .collect(Collectors.toMap(Card::getId, Function.identity()));
-    }
-    
     public Duelist getDuelist(Duelist.Name name) {
-        return duelistMap.computeIfAbsent(name, n -> {
-            Duelist d = new Duelist(name);
-            //load pools
-            Arrays.stream(Pool.Type.values()).forEach(poolType -> {
-                List<Pool.Entry> poolEntries = handle.createQuery("SELECT CardId, CardProbability FROM droppool WHERE Duelist = :duelist AND PoolType = :type")
-                        .bind("duelist", d.getId())
-                        .bind("type", poolType.toString())
-                        .map((rs, ctx) -> new Pool.Entry(getCard(rs.getInt("CardId")), rs.getInt("CardProbability")))
-                        .list();
-                d.addPool(poolType, new Pool(poolEntries));
-            });
-            return d;
-        });
+        return getDuelist(name.getId());
     }
-    
+
+    public Duelist getDuelist(int id) {
+        return duelistMap.get(id);
+    }
+
+    private Card fuseSimple(int firstCardId, int secondCardId) {
+        Map<Integer,Card> availableFusions = fusionMap.get(firstCardId);
+        if(availableFusions == null)
+            return null;
+        return availableFusions.get(secondCardId);
+    }
+
+    private Card fuseImpl(int firstCardId, int secondCardId) {
+        Card firstCheck = fuseSimple(firstCardId, secondCardId);
+        if(firstCheck != null)
+            return firstCheck;
+        return fuseSimple(secondCardId, firstCardId);
+    }
+
+    /**
+     * 
+     * @param firstCard
+     * @param secondCard
+     * @return the result of fusing the two cards, or the second card if no fusion is possible
+     */
     public Card fuse(Card firstCard, Card secondCard) {
-        CardPair pair = new CardPair(firstCard, secondCard);
-        return fusionCache.computeIfAbsent(pair, (i) -> {
-            int firstCheck = lookupFusion(firstCard, secondCard);
-            if(firstCheck == -1) {
-                int inverseCheck = lookupFusion(secondCard, firstCard);
-                if(inverseCheck == -1) {
-                    return secondCard;
-                }
-                else {
-                    return getCard(inverseCheck);
-                }
-            }
-            else {
-                return getCard(firstCheck);
-            }
-        });
+        Card result = fuseImpl(firstCard.id(), secondCard.id());
+        if(result == null)
+            return secondCard;
+        return result;
+    }
+
+    /**
+     * 
+     * @param firstCard
+     * @param secondCard
+     * @return the result of fusing the two cards, or null if no fusion is possible
+     */
+    public Card fuseOrNull(Card firstCard, Card secondCard) {
+        return fuseImpl(firstCard.id(), secondCard.id());
     }
     
+    /**
+     * 
+     * @param monster
+     * @param equip
+     * @return true if the monster can be equipped with the equip
+     */
     public boolean isEquippable(Card monster, Card equip) {
-        if(!"Equip".equals(equip.getType()))
-            throw new IllegalArgumentException(equip.getName() + " is not an equip");
-        return handle.createQuery("SELECT * FROM equipinfo WHERE EquipId = :equip AND CardId = :monster")
-                .bind("equip", equip.getId())
-                .bind("monster", monster.getId())
-                .mapToMap()
-                .findOne()
-                .isPresent();
+        if(!EQUIP_TYPE.equals(equip.type()))
+            throw new IllegalArgumentException(equip.name() + " is not an equip");
+        if(NON_MONSTER_TYPES.contains(monster.type()))
+            throw new IllegalArgumentException(monster.name() + " is not a monster");
+        Set<Integer> equippableCards = equipMap.get(equip.id());
+        if(equippableCards == null)
+            return false;
+        return equippableCards.contains(monster.id());
     }
     
-    private int lookupFusion(Card firstCard, Card secondCard) {
-        Optional<Integer> resultId = handle.createQuery("SELECT Result FROM fusions WHERE Material1 = :id1 AND Material2 = :id2")
-                .bind("id1", firstCard.getId())
-                .bind("id2", secondCard.getId())
-                .mapTo(Integer.class)
-                .findOne();
-        return resultId.orElse(-1);
-    }
-    
-    public static class Builder {
-        private boolean desc = true;
-        
-        public Builder excludeDescrptions() {
-            desc = false;
-            return this;
+    /**
+     * 
+     * @return the singleton instance of FMDB
+     */
+    public static synchronized FMDB getInstance() {
+        if(singleton == null) {
+            singleton = new FMDB();
         }
-        
-        public FMDB build() {
-            return new FMDB(desc);
-        }
+        return singleton;
     }
 }

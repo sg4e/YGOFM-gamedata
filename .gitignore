@@ -5,5 +5,7 @@
 build
 .nb-gradle-properties
 .nb-gradle/
+.vscode
 nbproject
-json
+
+bin

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,14 @@
  */
 package sg4e.ygofm.gamedata;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static sg4e.ygofm.gamedata.Deck.ATTACK_ORDER;
+import static sg4e.ygofm.gamedata.Deck.CARD_ID_ORDER;
+import static sg4e.ygofm.gamedata.Deck.DECK_SIZE;
+import static sg4e.ygofm.gamedata.Deck.TYPE_ORDER;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -31,15 +39,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import static sg4e.ygofm.gamedata.Deck.*;
 
 /**
  *
@@ -70,12 +76,7 @@ public class DeckTest {
     
     @BeforeEach
     public void init() {
-        db = new FMDB.Builder().build();
-    }
-    
-    @AfterEach
-    public void tearDown() {
-        db.close();
+        db = FMDB.getInstance();
     }
     
     private void loadDecks(String resourceLocation) {
@@ -138,13 +139,6 @@ public class DeckTest {
         //now, take the seed and verify it was used to shuffle the player's deck and generate and shuffle ai's deck
         RNG realSeed = seeds.stream().findFirst().get();
         verifyShuffle(realSeed, duelist, sorter);
-    }
-    
-    @ParameterizedTest
-    @MethodSource("provideDeckResources")
-    public void testSortsWithAlternativeDbBuilders(String resource, Duelist.Name duelist, Comparator<Card> sorter) {
-        db = new FMDB.Builder().excludeDescrptions().build();
-        testFindPossibleSeeds(resource, duelist, sorter);
     }
     
     private static Stream<Arguments> provideDeckResources() {

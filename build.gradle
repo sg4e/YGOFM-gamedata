@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'java-library'
-    id "io.freefair.lombok" version "8.4"
 }
 
 repositories {
@@ -18,12 +17,9 @@ test {
 }
 
 dependencies {
-    //sql
-    implementation group: 'org.jdbi', name: 'jdbi3-core', version: '3.44.1'
-    implementation group: 'org.jdbi', name: 'jdbi3-sqlobject', version: '3.44.1'
-    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.45.1.0'
-    
-    implementation group: 'com.hubspot.rosetta', name: 'RosettaJdbi3', version: '3.11.9'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.16.1'
+    implementation group: 'com.fasterxml.jackson.module', name: 'jackson-module-parameter-names', version: '2.16.1'
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.16.1'
     
     //unit tests
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'

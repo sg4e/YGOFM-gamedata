@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  *
@@ -42,7 +41,7 @@ public class Pool {
     private final SortedMap<Integer, Entry> entries;
 
     Pool(Collection<Entry> data) {
-        entries = new TreeMap<>(data.stream().collect(Collectors.toMap(e -> e.getCard().getId(), Function.identity())));
+        entries = new TreeMap<>(data.stream().collect(Collectors.toMap(e -> e.card().id(), Function.identity())));
     }
 
     /**
@@ -71,9 +70,9 @@ public class Pool {
         rand = rand % 2048;
         for(Map.Entry<Integer,Entry> mapEntry : entries.entrySet()) {
             Entry e = mapEntry.getValue();
-            rand -= e.getProbability();
+            rand -= e.probability();
             if(rand < 0)
-                return e.getCard();
+                return e.card();
         }
         //returns null if bugged or if droppool is missing entries
         return null;
@@ -88,28 +87,26 @@ public class Pool {
     }
     
     public Entry getEntry(Card card) {
-        return getEntry(card.getId());
+        return getEntry(card.id());
     }
 
-    @Data
-    @AllArgsConstructor(access = AccessLevel.PACKAGE)
-    public static class Entry {
-        private final Card card;
-        private final int probability; // probability out of 2048
-    }
+    public record Entry(Card card, int probability) {};
 
-    @AllArgsConstructor
     public static enum Type {
-        //@JsonProperty("Deck")
+        @JsonProperty("Deck")
         DECK("Deck"),
-        //@JsonProperty("SAPow")
+        @JsonProperty("SAPow")
         SA_POW("SAPow"),
-        //@JsonProperty("BCD")
+        @JsonProperty("BCD")
         BCD("BCD"),
-        //@JsonProperty("SATec")
+        @JsonProperty("SATec")
         SA_TEC("SATec");
         
         private final String name;
+
+        private Type(String name) {
+            this.name = name;
+        }
 
         @Override
         public String toString() {

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,68 +24,43 @@
 package sg4e.ygofm.gamedata;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  *
  * @author sg4e
  */
-@Getter
-@ToString
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
-public class Card {
-    @JsonProperty("CardId")
-    private int id;
-    @JsonProperty("CardName")
-    private String name;
-    @JsonProperty("StarchipCost")
-    private int starchips;
-    private int level, attack, defense;
-    @JsonProperty("GuardianStar1")
-    private GuardianStar firstGuardianStar;
-    @JsonProperty("GuardianStar2")
-    private GuardianStar secondGuardianStar;
-    private String description, type, attribute, password;
+public record Card(
+    @JsonProperty("cardId")
+    int id,
+    @JsonProperty("cardName")
+    String name,
+    @JsonProperty("starchipCost")
+    int starchips,
+    int level,
+    int attack,
+    int defense,
+    @JsonProperty("guardianStar1")
+    GuardianStar firstGuardianStar,
+    @JsonProperty("guardianStar2")
+    GuardianStar secondGuardianStar,
+    String description, 
+    String type,
+    String attribute,
+    String password,
     //values relevant for sorting
-    //UpperCamelCaseStrategy doesn't figure these names out for some reason; might be a rosetta bug
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("AbcSort")
-    private int abcSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("MaxSort")
-    private int maxSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("AtkSort")
-    private int atkSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("DefSort")
-    private int defSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("TypeSort")
-    private int typeSort;
+    int abcSort,
+    int maxSort,
+    int atkSort,
+    int defSort,
+    int typeSort,
+    int aiSort,
     //Japanese sort values
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("JpAbcSort")
-    private int jpAbcSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("JpMaxSort")
-    private int jpMaxSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("JpAtkSort")
-    private int jpAtkSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("JpDefSort")
-    private int jpDefSort;
-    @Getter(AccessLevel.PACKAGE)
-    @JsonProperty("JpTypeSort")
-    private int jpTypeSort;
-    
+    int jpAbcSort,
+    int jpMaxSort,
+    int jpAtkSort,
+    int jpDefSort,
+    int jpTypeSort
+    )  {
     public boolean canEquip(Card equip, FMDB db) {
         return db.isEquippable(this, equip);
     }

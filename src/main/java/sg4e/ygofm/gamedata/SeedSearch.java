@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2020 sg4e.
+ * Copyright 2024 sg4e.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
-import lombok.Getter;
 
 /**
  *
@@ -46,9 +45,7 @@ public class SeedSearch {
      * How many {@code rand()} calls to consider when searching for a seed. Value to be tuned.
      */
     public static final int DEFAULT_SEARCH_SPACE = 5_000_000;
-    @Getter
     private int spaceStart = 0;
-    @Getter
     private int spaceEnd = DEFAULT_SEARCH_SPACE;
     private Runnable iterCallback = null;
     private Consumer<RNG> hitCallback = null;
@@ -60,6 +57,14 @@ public class SeedSearch {
             throw new IllegalArgumentException("Cards drawn exceeds deck size: " + drawnCards.size());
         deck = d;
         this.drawnCards = drawnCards;
+    }
+
+    public int getSpaceStart() {
+        return spaceStart;
+    }
+
+    public int getSpaceEnd() {
+        return spaceEnd;
     }
     
     public Set<RNG> search() {

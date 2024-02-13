@@ -1,0 +1,170 @@
+[
+    {
+        "ritualCardId": 665,
+        "material1": 255,
+        "material2": 296,
+        "material3": 629,
+        "result": 362
+    },
+    {
+        "ritualCardId": 666,
+        "material1": 29,
+        "material2": 31,
+        "material3": 101,
+        "result": 357
+    },
+    {
+        "ritualCardId": 667,
+        "material1": 371,
+        "material2": 372,
+        "material3": 373,
+        "result": 374
+    },
+    {
+        "ritualCardId": 670,
+        "material1": 27,
+        "material2": 38,
+        "material3": 58,
+        "result": 364
+    },
+    {
+        "ritualCardId": 671,
+        "material1": 85,
+        "material2": 298,
+        "material3": 377,
+        "result": 360
+    },
+    {
+        "ritualCardId": 673,
+        "material1": 201,
+        "material2": 403,
+        "material3": 483,
+        "result": 356
+    },
+    {
+        "ritualCardId": 674,
+        "material1": 186,
+        "material2": 261,
+        "material3": 595,
+        "result": 365
+    },
+    {
+        "ritualCardId": 675,
+        "material1": 1,
+        "material2": 1,
+        "material3": 1,
+        "result": 380
+    },
+    {
+        "ritualCardId": 676,
+        "material1": 249,
+        "material2": 395,
+        "material3": 511,
+        "result": 701
+    },
+    {
+        "ritualCardId": 677,
+        "material1": 14,
+        "material2": 295,
+        "material3": 547,
+        "result": 702
+    },
+    {
+        "ritualCardId": 678,
+        "material1": 3,
+        "material2": 64,
+        "material3": 453,
+        "result": 703
+    },
+    {
+        "ritualCardId": 679,
+        "material1": 160,
+        "material2": 161,
+        "material3": 535,
+        "result": 704
+    },
+    {
+        "ritualCardId": 680,
+        "material1": 6,
+        "material2": 47,
+        "material3": 571,
+        "result": 705
+    },
+    {
+        "ritualCardId": 691,
+        "material1": 168,
+        "material2": 294,
+        "material3": 604,
+        "result": 706
+    },
+    {
+        "ritualCardId": 692,
+        "material1": 89,
+        "material2": 449,
+        "material3": 451,
+        "result": 710
+    },
+    {
+        "ritualCardId": 693,
+        "material1": 102,
+        "material2": 182,
+        "material3": 220,
+        "result": 720
+    },
+    {
+        "ritualCardId": 694,
+        "material1": 178,
+        "material2": 269,
+        "material3": 288,
+        "result": 709
+    },
+    {
+        "ritualCardId": 695,
+        "material1": 166,
+        "material2": 405,
+        "material3": 416,
+        "result": 715
+    },
+    {
+        "ritualCardId": 696,
+        "material1": 52,
+        "material2": 480,
+        "material3": 533,
+        "result": 717
+    },
+    {
+        "ritualCardId": 697,
+        "material1": 239,
+        "material2": 378,
+        "material3": 621,
+        "result": 716
+    },
+    {
+        "ritualCardId": 698,
+        "material1": 266,
+        "material2": 635,
+        "material3": 638,
+        "result": 708
+    },
+    {
+        "ritualCardId": 699,
+        "material1": 146,
+        "material2": 479,
+        "material3": 485,
+        "result": 719
+    },
+    {
+        "ritualCardId": 700,
+        "material1": 436,
+        "material2": 441,
+        "material3": 542,
+        "result": 718
+    },
+    {
+        "ritualCardId": 721,
+        "material1": 7,
+        "material2": 35,
+        "material3": 417,
+        "result": 722
+    }
+]
