@@ -26,7 +26,7 @@ package sg4e.ygofm.gamedata;
 import java.util.Map;
 
 /**
- *
+ * A representation of a Forbidden Memories duelist.
  * @author sg4e
  */
 public class Duelist {
