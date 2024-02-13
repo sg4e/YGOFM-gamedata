@@ -26,7 +26,7 @@ package sg4e.ygofm.gamedata;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- *
+ * The Guardian Stars in Forbidden Memories. Each Guardian Star has a strength and a weakness.
  * @author sg4e
  */
 public enum GuardianStar {
@@ -81,18 +81,36 @@ public enum GuardianStar {
         this.name = name;
     }
     
+    /**
+     * Returns the Guardian Star that this Guardian Star is strong against.
+     * @return the Guardian Star that this Guardian Star is strong against
+     */
     public GuardianStar getStrength() {
         return strong;
     }
     
+    /**
+     * Returns the Guardian Star that this Guardian Star is weak against.
+     * @return the Guardian Star that this Guardian Star is weak against
+     */
     public GuardianStar getWeakness() {
         return weak;
     }
     
+    /**
+     * Returns true if this Guardian Star is strong against the given Guardian Star.
+     * @param opponent the opposing Guardian Star
+     * @return true if this Guardian Star is strong against the given Guardian Star
+     */
     public boolean isStrongAgainst(GuardianStar opponent) {
         return getStrength() == opponent;
     }
     
+    /**
+     * Returns true if this Guardian Star is weak against the given Guardian Star.
+     * @param opponent the opposing Guardian Star
+     * @return true if this Guardian Star is weak against the given Guardian Star
+     */
     public boolean isWeakAgainst(GuardianStar opponent) {
         return getWeakness() == opponent;
     }

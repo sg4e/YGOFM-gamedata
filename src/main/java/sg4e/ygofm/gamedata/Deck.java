@@ -32,13 +32,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Implementation of a deck of cards in Forbidden Memories. A deck must be exactly
+ * 40 cards and cannot contain more than 3 copies of a single card. Deck sorts that
+ * are done on the Build Deck screen before duels are also implemented to facilitate
+ * RNG manipulation simulations.
  * @author sg4e
  */
 public class Deck {
 
     private final Card[] cards;
 
+    /**
+     * The size of a deck in Forbidden Memories.
+     */
     public static final int DECK_SIZE = 40;
     
     private static class ComparatorStringDecorator<T> implements Comparator<T> {
@@ -89,10 +95,18 @@ public class Deck {
         SORTS.add(JAPANESE_TYPE_ORDER);
     }
 
+    /**
+     * Creates a new deck with no cards.
+     */
     public Deck() {
         cards = new Card[DECK_SIZE];
     }
     
+    /**
+     * Creates a new deck with the given composition of cards. The composition must contain
+     * exactly 40 cards.
+     * @param composition the cards of the deck
+     */
     public Deck(Collection<Card> composition) {
         this();
         if(composition.size() != DECK_SIZE)
@@ -100,10 +114,19 @@ public class Deck {
         composition.toArray(cards);
     }
     
+    /**
+     * Creates a copy of another deck
+     * @param toCopy the deck to copy
+     */
     public Deck(Deck toCopy) {
         cards = Arrays.copyOf(toCopy.cards, DECK_SIZE);
     }
     
+    /**
+     * Gets the card in the deck at the given index.
+     * @param index the index of the card in the deck
+     * @return the card at the given index
+     */
     public Card get(int index) {
         if(index > DECK_SIZE) 
             throw new IllegalArgumentException(String.format("Index %s exceeds deck size %s", index, DECK_SIZE));
@@ -111,9 +134,9 @@ public class Deck {
     }
     
     /**
-     * 
-     * @param start inclusive
-     * @param end exclusive
+     * Gets the range of cards in the deck from the given start index to the given end index.
+     * @param start the start index, inclusive
+     * @param end the end index, exclusive
      * @return 
      */
     public List<Card> getRange(int start, int end) {
@@ -126,6 +149,10 @@ public class Deck {
         return Arrays.asList(Arrays.copyOfRange(cards, start, end));
     }
     
+    /**
+     * Converts this deck to a list of cards.
+     * @return a list of cards in the deck in the same order
+     */
     public List<Card> toList() {
         //Arrays.asList doesn't create a copy; guard against external editing of internal array
         return new ArrayList<>(Arrays.asList(cards));
@@ -156,10 +183,20 @@ public class Deck {
         return true;
     }
     
+    /**
+     * Sorts the deck according to the given deck sort. The deck in modified in place.
+     * @param comparator the deck sort
+     */
     public void sort(Comparator<? super Card> comparator) {
         Arrays.sort(cards, comparator);
     }
 
+    /**
+     * Shuffles the deck, with its current order as the starting point. Use this
+     * method for player decks.
+     * @param seed the RNG seed
+     * @param deckOrderBeforeDuel the sort order of the deck on the Build Deck screen before the duel
+     */
     public void shuffle(RNG seed, Comparator<? super Card> deckOrderBeforeDuel) {
         /*
         Quoted from GenericMadScientist in the FM discord:
@@ -175,7 +212,7 @@ public class Deck {
      * Shuffles the deck, with its current order as the starting point. Use this
      * shuffle method for AI decks.
      *
-     * @param seed
+     * @param seed the RNG seed
      */
     public void shuffle(RNG seed) {
         //the FM shuffle algorithm:
@@ -188,6 +225,11 @@ public class Deck {
         }
     }
     
+    /**
+     * Determines whether the deck starts with the given sequence of cards.
+     * @param cards the sequence of cards
+     * @return true if the deck starts with the given sequence of cards
+     */
     public boolean startsWith(List<Card> cards) {
         if(cards.size() > DECK_SIZE)
             throw new IllegalArgumentException("List of cards cannot exceed deck size: " + cards.size());
@@ -199,10 +241,10 @@ public class Deck {
     }
 
     /**
-     *
-     * @param duelist
-     * @param seed
-     * @return an unshuffled deck
+     * Creates an AI duelist's deck.
+     * @param duelist the duelist whose deck to create
+     * @param seed the RNG seed
+     * @return an unshuffled AI deck
      */
     public static Deck createDuelistDeck(Duelist duelist, RNG seed) {
         Deck deck = new Deck();
@@ -218,6 +260,10 @@ public class Deck {
         return deck;
     }
     
+    /**
+     * Gets all the deck sorts available in Forbidden Memories.
+     * @return a list of all deck sorts
+     */
     public static List<Comparator<Card>> getAllSorts() {
         return new ArrayList<>(SORTS);
     }

@@ -26,7 +26,8 @@ package sg4e.ygofm.gamedata;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
+ * A representation of a card in Forbidden Memories. Do not instantiate this class;
+ * use {@link FMDB} to obtain card objects.
  * @author sg4e
  */
 public record Card(

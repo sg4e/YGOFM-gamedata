@@ -39,26 +39,51 @@ public class Duelist {
         this.pools = pools;
     }
     
+    /**
+     * Returns the number of cards in this duelist's hand.
+     * @return the number of cards in this duelist's hand
+     */
     public int getHandSize() {
         return name.getHandSize();
     }
     
+    /**
+     * Returns the ID of this duelist.
+     * @return the ID of this duelist
+     */
     public int getId() {
         return name.getId();
     }
     
+    /**
+     * Returns true if this duelist is a high mage or low mage.
+     * @return true if this duelist is a mage
+     */
     public boolean isEitherMage() {
         return name.isMage();
     }
 
+    /**
+     * Returns true if this duelist is a low mage.
+     * @return true if this duelist is a low mage
+     */
     public boolean isLowMage() {
         return name.isLowMage();
     }
 
+    /**
+     * Returns true if this duelist is a high mage.
+     * @return true if this duelist is a high mage
+     */
     public boolean isHighMage() {
         return name.isHighMage();
     }
 
+    /**
+     * Returns true if this duelist will prioritize playing field spells when the
+     * current field is not their preferred field.
+     * @return true if this duelist aggressively plays field spells
+     */
     public boolean hasMageAggressiveFieldAi() {
         if(name == Name.LABYRINTH_MAGE)
             return false;
@@ -68,10 +93,19 @@ public class Duelist {
             return isLowMage();
     }
     
+    /**
+     * Returns the name of this duelist.
+     * @return the name of this duelist
+     */
     public Name getName() {
         return name;
     }
     
+    /**
+     * Returns the drop pool of the given type for this duelist.
+     * @param type the type of pool
+     * @return the pool of the given type
+     */
     public Pool getPool(Pool.Type type) {
         return pools.get(type);
     }
@@ -81,6 +115,10 @@ public class Duelist {
         return getName().toString();
     }
     
+    /**
+     * The names of all the duelists in Forbidden Memories. Use these to get a
+     * duelist from {@link FMDB#getDuelist(Duelist.Name)}.
+     */
     public static enum Name {
         SIMON(1, 5, "Simon Muran"),
         TEANA_1(2, 5, "Teana"),

@@ -38,7 +38,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- *
+ * The entry point for querying FM game data. This class is a singleton and
+ * should be accessed via the {@link #getInstance()} method.
+ * <br><br>
+ * Use this class to instantiate Card and Duelist objects and do not use those
+ * classes' constructors directly. The behavior of any methods in this class
+ * when passed objects not created by this class is undefined.
+ * <br><br>
+ * This class is thread-safe.
  * @author sg4e
  */
 public class FMDB {
@@ -93,18 +100,39 @@ public class FMDB {
         equipMap = rawEquips.stream().collect(Collectors.groupingBy(JsonEquip::equipId, Collectors.mapping(JsonEquip::cardId, Collectors.toSet())));
     }
     
+    /**
+     * Gets a card by its id.
+     * @param id a card id
+     * @return the card with the given id, or null if no such card exists
+     */
     public Card getCard(int id) {
         return cardMap.get(id);
     }
     
+    /**
+     * Gets all FM cards.
+     * @return all cards in the game
+     */
     public Set<Card> getAllCards() {
         return new HashSet<>(cardMap.values());
     }
     
+    /**
+     * Gets a duelist by name.
+     * @param name a duelist name
+     * @return the duelist with the given name, never null
+     */
     public Duelist getDuelist(Duelist.Name name) {
+        if(name == null)
+            throw new IllegalArgumentException("name cannot be null");
         return getDuelist(name.getId());
     }
 
+    /**
+     * Gets a duelist by id. Consider using {@link #getDuelist(Duelist.Name)} instead.
+     * @param id the id of a duelist as specified by the FM database
+     * @return the duelist with the given id, or null if no such duelist exists
+     */
     public Duelist getDuelist(int id) {
         return duelistMap.get(id);
     }
@@ -124,12 +152,16 @@ public class FMDB {
     }
 
     /**
-     * 
-     * @param firstCard
-     * @param secondCard
-     * @return the result of fusing the two cards, or the second card if no fusion is possible
+     * Performs a fusion or returns the second card if no fusion is possible. This
+     * behavior mirrors the in-game mechanic when selecting two cards to fuse.
+     * @param firstCard the first card of the fusion
+     * @param secondCard the second card of the fusion
+     * @return the result of fusing the two cards, or the second card if no fusion is possible,
+     * never null
      */
     public Card fuse(Card firstCard, Card secondCard) {
+        if(firstCard == null || secondCard == null)
+            throw new IllegalArgumentException("cards cannot be null");
         Card result = fuseImpl(firstCard.id(), secondCard.id());
         if(result == null)
             return secondCard;
@@ -137,9 +169,9 @@ public class FMDB {
     }
 
     /**
-     * 
-     * @param firstCard
-     * @param secondCard
+     * Performs a fusion or returns null if no fusion is possible.
+     * @param firstCard the first card of the fusion
+     * @param secondCard the second card of the fusion
      * @return the result of fusing the two cards, or null if no fusion is possible
      */
     public Card fuseOrNull(Card firstCard, Card secondCard) {
@@ -147,9 +179,9 @@ public class FMDB {
     }
     
     /**
-     * 
-     * @param monster
-     * @param equip
+     * Determines whether a monster can be equipped with an equip card.
+     * @param monster the monster to equip
+     * @param equip the equip card
      * @return true if the monster can be equipped with the equip
      */
     public boolean isEquippable(Card monster, Card equip) {
@@ -164,7 +196,7 @@ public class FMDB {
     }
     
     /**
-     * 
+     * Gets the singleton instance of FMDB.
      * @return the singleton instance of FMDB
      */
     public static synchronized FMDB getInstance() {

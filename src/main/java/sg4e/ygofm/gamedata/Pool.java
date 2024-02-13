@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
+ * Implementation of drop pools.
  * @author sg4e
  */
 public class Pool {
@@ -45,10 +45,10 @@ public class Pool {
     }
 
     /**
-     *
+     * Returns the card dropped by the AI when using this pool for the given RNG value.
      * @param rand the value returned by FM's {@code rand()} function (before
      * modulo)
-     * @return
+     * @return the card dropped, or the card added to the AI's deck if called on the Deck pool
      */
     public Card getDrop(int rand) {
         /*
@@ -78,20 +78,42 @@ public class Pool {
         return null;
     }
     
+    /**
+     * Returns the card dropped by the AI when using this pool for the given RNG seed.
+     * @param seed the RNG seed
+     * @return the card dropped, or the card added to the AI's deck if called on the Deck pool
+     */
     public Card getDrop(RNG seed) {
         return getDrop(seed.rand());
     }
     
+    /**
+     * Returns the {@link Entry} for the given card ID.
+     * @param cardId
+     * @return the entry for the given card ID, or null if not a valid id
+     */
     public Entry getEntry(int cardId) {
         return entries.get(cardId);
     }
     
+    /**
+     * Returns the {@link Entry} for the given card.
+     * @param card
+     * @return the entry for the given card
+     */
     public Entry getEntry(Card card) {
         return getEntry(card.id());
     }
 
+    /**
+     * A record representing a card and its probability of being dropped. The
+     * probability is out of 2048.
+     */
     public record Entry(Card card, int probability) {};
 
+    /**
+     * The type of drop pool.
+     */
     public static enum Type {
         @JsonProperty("Deck")
         DECK("Deck"),
