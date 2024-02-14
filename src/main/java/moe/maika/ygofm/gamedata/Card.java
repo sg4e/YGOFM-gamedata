@@ -66,6 +66,10 @@ public record Card(
         return db.isEquippable(this, equip);
     }
 
+    /**
+     * Returns the name of the card
+     * @return the name of the card
+     */
     @Override
     public String toString() {
         return name;
