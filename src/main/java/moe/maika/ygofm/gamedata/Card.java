@@ -65,4 +65,9 @@ public record Card(
     public boolean canEquip(Card equip, FMDB db) {
         return db.isEquippable(this, equip);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
