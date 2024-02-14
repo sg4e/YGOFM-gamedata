@@ -23,7 +23,6 @@
  */
 package moe.maika.ygofm.gamedata;
 
-import moe.maika.ygofm.gamedata.Duelist;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

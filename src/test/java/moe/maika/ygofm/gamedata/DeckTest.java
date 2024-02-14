@@ -23,12 +23,6 @@
  */
 package moe.maika.ygofm.gamedata;
 
-import moe.maika.ygofm.gamedata.Duelist;
-import moe.maika.ygofm.gamedata.RNG;
-import moe.maika.ygofm.gamedata.Deck;
-import moe.maika.ygofm.gamedata.Card;
-import moe.maika.ygofm.gamedata.FMDB;
-import moe.maika.ygofm.gamedata.SeedSearch;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
