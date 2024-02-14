@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sg4e.ygofm.gamedata;
+package moe.maika.ygofm.gamedata;
 
+import moe.maika.ygofm.gamedata.Duelist;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

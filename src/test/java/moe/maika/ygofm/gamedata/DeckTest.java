@@ -21,15 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sg4e.ygofm.gamedata;
+package moe.maika.ygofm.gamedata;
 
+import moe.maika.ygofm.gamedata.Duelist;
+import moe.maika.ygofm.gamedata.RNG;
+import moe.maika.ygofm.gamedata.Deck;
+import moe.maika.ygofm.gamedata.Card;
+import moe.maika.ygofm.gamedata.FMDB;
+import moe.maika.ygofm.gamedata.SeedSearch;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static sg4e.ygofm.gamedata.Deck.ATTACK_ORDER;
-import static sg4e.ygofm.gamedata.Deck.CARD_ID_ORDER;
-import static sg4e.ygofm.gamedata.Deck.DECK_SIZE;
-import static sg4e.ygofm.gamedata.Deck.TYPE_ORDER;
+import static moe.maika.ygofm.gamedata.Deck.ATTACK_ORDER;
+import static moe.maika.ygofm.gamedata.Deck.CARD_ID_ORDER;
+import static moe.maika.ygofm.gamedata.Deck.DECK_SIZE;
+import static moe.maika.ygofm.gamedata.Deck.TYPE_ORDER;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

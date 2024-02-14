@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package sg4e.ygofm.gamedata;
+package moe.maika.ygofm.gamedata;
 
 /**
  * An implementation of the RNG used in Forbidden Memories. The constructors of
