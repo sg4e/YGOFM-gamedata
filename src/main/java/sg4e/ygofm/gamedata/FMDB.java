@@ -137,6 +137,14 @@ public class FMDB {
         return duelistMap.get(id);
     }
 
+    /**
+     * Gets all FM duelists.
+     * @return all duelists in the game
+     */
+    public Set<Duelist> getAllDuelists() {
+        return new HashSet<>(duelistMap.values());
+    }
+
     private Card fuseSimple(int firstCardId, int secondCardId) {
         Map<Integer,Card> availableFusions = fusionMap.get(firstCardId);
         if(availableFusions == null)

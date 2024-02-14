@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -155,6 +156,12 @@ public class FMDBTest {
         Card thtd = db.getCard(613);
         Card dt = db.getCard(315);
         assertThrows(IllegalArgumentException.class, () -> db.isEquippable(dt, thtd));
+    }
+
+    @Test
+    public void testGetAllDuelists() {
+        assertEquals(Arrays.stream(Duelist.Name.values()).collect(Collectors.toSet()),
+                db.getAllDuelists().stream().map(Duelist::getName).collect(Collectors.toSet()));
     }
     
     @Test
