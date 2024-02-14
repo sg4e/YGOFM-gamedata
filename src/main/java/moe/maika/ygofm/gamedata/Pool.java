@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -111,8 +112,17 @@ public class Pool {
      * Returns all entries in this pool.
      * @return all entries in this pool
      */
-    public Set<Entry> getAllentries() {
+    public Set<Entry> getAllEntries() {
         return new HashSet<>(entries.values());
+    }
+
+    /**
+     * Returns all entries in this pool that match the given filter.
+     * @param filter
+     * @return all entries in this pool that match the given filter
+     */
+    public Set<Entry> getAllEntries(Predicate<Entry> filter) {
+        return entries.values().stream().filter(filter).collect(Collectors.toSet());
     }
 
     /**
