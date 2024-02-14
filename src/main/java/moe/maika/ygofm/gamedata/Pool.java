@@ -24,7 +24,9 @@
 package moe.maika.ygofm.gamedata;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -103,6 +105,14 @@ public class Pool {
      */
     public Entry getEntry(Card card) {
         return getEntry(card.id());
+    }
+
+    /**
+     * Returns all entries in this pool.
+     * @return all entries in this pool
+     */
+    public Set<Entry> getAllentries() {
+        return new HashSet<>(entries.values());
     }
 
     /**
