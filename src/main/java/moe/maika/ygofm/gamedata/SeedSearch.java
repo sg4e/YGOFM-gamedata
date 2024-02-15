@@ -44,6 +44,10 @@ import java.util.stream.IntStream;
  * available, the faster the search will complete. The search can be cancelled at any time by calling
  * {@link #cancel()}. Note that even with modern processors and parallelization, the search can take
  * a few seconds to complete with the default search space, and longer with larger search spaces.
+ * <p>
+ * This class is NOT thread-safe. The class will parallelize its own search onto a worker pool of threads
+ * in a thread-safe manner, but any external parallelization is not safe. Each search should be performed
+ * with a new instance of this class and a new builder.
  * @author sg4e
  */
 public class SeedSearch {
@@ -142,6 +146,8 @@ public class SeedSearch {
     
     /**
      * A builder for {@link SeedSearch} instances. Use a new builder for each search.
+     * <p>
+     * The builder is not thread-safe and should not be reused after building an instance.
      */
     public static class Builder {
         private final SeedSearch search;

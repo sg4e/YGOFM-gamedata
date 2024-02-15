@@ -18,6 +18,24 @@
  */
 package moe.maika.ygofm.gamedata;
 
-record JsonEquip(int equipId, int cardId) {
-    
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+class JsonEquip {
+    private final int equipId;
+    private final int cardId;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    private JsonEquip(@JsonProperty("equipId") int equipId, @JsonProperty("cardId") int cardId) {
+        this.equipId = equipId;
+        this.cardId = cardId;
+    }
+
+    public int getEquipId() {
+        return equipId;
+    }
+
+    public int getCardId() {
+        return cardId;
+    }
 }

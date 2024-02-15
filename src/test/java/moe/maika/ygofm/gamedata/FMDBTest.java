@@ -55,38 +55,38 @@ public class FMDBTest {
     
     @Test
     public void testGetAllCards() {
-        Map<Integer,Card> cardMap = db.getAllCards().stream().collect(Collectors.toMap(Card::id, Function.identity()));
+        Map<Integer,Card> cardMap = db.getAllCards().stream().collect(Collectors.toMap(Card::getId, Function.identity()));
         //test some arbitrary cards
-        assertEquals("Mystical Sand", cardMap.get(531).name());
-        assertEquals("Nekogal #2", cardMap.get(627).name());
-        assertEquals("Nemuriko", cardMap.get(129).name());
+        assertEquals("Mystical Sand", cardMap.get(531).getName());
+        assertEquals("Nekogal #2", cardMap.get(627).getName());
+        assertEquals("Nemuriko", cardMap.get(129).getName());
     }
     
     @Test
     public void checkBlueEyes() {
         Card c = db.getCard(1);
-        assertEquals("Blue-eyes White Dragon", c.name());
-        assertEquals(1, c.id());
-        assertEquals(8, c.level());
-        assertEquals(3000, c.attack());
-        assertEquals(2500, c.defense());
-        assertEquals(999_999, c.starchips());
-        assertEquals(GuardianStar.SUN, c.firstGuardianStar());
-        assertEquals(GuardianStar.MARS, c.secondGuardianStar());
-        assertEquals("Dragon", c.type());
-        assertEquals("Light", c.attribute());
-        assertEquals("89631139", c.password());
-        assertEquals(74, c.abcSort());
-        assertEquals(7, c.maxSort());
-        assertEquals(7, c.atkSort());
-        assertEquals(11, c.defSort());
-        assertEquals(6, c.typeSort());
-        assertEquals(5, c.aiSort());
-        assertEquals(524, c.jpAbcSort());
-        assertEquals(7, c.jpMaxSort());
-        assertEquals(7, c.jpAtkSort());
-        assertEquals(11, c.jpDefSort());
-        assertEquals(18, c.jpTypeSort());
+        assertEquals("Blue-eyes White Dragon", c.getName());
+        assertEquals(1, c.getId());
+        assertEquals(8, c.getLevel());
+        assertEquals(3000, c.getAttack());
+        assertEquals(2500, c.getDefense());
+        assertEquals(999_999, c.getStarchips());
+        assertEquals(GuardianStar.SUN, c.getFirstGuardianStar());
+        assertEquals(GuardianStar.MARS, c.getSecondGuardianStar());
+        assertEquals("Dragon", c.getType());
+        assertEquals("Light", c.getAttribute());
+        assertEquals("89631139", c.getPassword());
+        assertEquals(74, c.getAbcSort());
+        assertEquals(7, c.getMaxSort());
+        assertEquals(7, c.getAtkSort());
+        assertEquals(11, c.getDefSort());
+        assertEquals(6, c.getTypeSort());
+        assertEquals(5, c.getAiSort());
+        assertEquals(524, c.getJpAbcSort());
+        assertEquals(7, c.getJpMaxSort());
+        assertEquals(7, c.getJpAtkSort());
+        assertEquals(11, c.getJpDefSort());
+        assertEquals(18, c.getJpTypeSort());
     }
     
     @Test
@@ -101,7 +101,7 @@ public class FMDBTest {
         Card spikeSeadra = db.getCard(448);
         Card rightArmOfTheForbiddenOne = db.getCard(19);
         Card kaminariAttack = db.fuse(spikeSeadra, rightArmOfTheForbiddenOne);
-        assertEquals(458, kaminariAttack.id());
+        assertEquals(458, kaminariAttack.getId());
     }
     
     @Test
@@ -125,7 +125,7 @@ public class FMDBTest {
         Card spikeSeadra = db.getCard(448);
         Card rightArmOfTheForbiddenOne = db.getCard(19);
         Card kaminariAttack = db.fuse(spikeSeadra, rightArmOfTheForbiddenOne);
-        assertEquals(458, kaminariAttack.id());
+        assertEquals(458, kaminariAttack.getId());
         Card sameKaminariAttack = db.fuse(rightArmOfTheForbiddenOne, spikeSeadra);
         assertEquals(kaminariAttack, sameKaminariAttack);
     }
@@ -168,32 +168,32 @@ public class FMDBTest {
     public void testDuelistDeckPool() {
         Duelist seto3 = db.getDuelist(Duelist.Name.SETO_3);
         Pool.Entry beud = seto3.getPool(Pool.Type.DECK).getEntry(380);
-        assertEquals(380, beud.card().id());
-        assertEquals(80, beud.probability());
+        assertEquals(380, beud.getCard().getId());
+        assertEquals(80, beud.getProbability());
     }
     
     @Test
     public void testDuelistSATec() {
         Duelist pegasus = db.getDuelist(Duelist.Name.PEGASUS);
         Pool.Entry megamorph = pegasus.getPool(Pool.Type.SA_TEC).getEntry(657);
-        assertEquals(657, megamorph.card().id());
-        assertEquals(64, megamorph.probability());
+        assertEquals(657, megamorph.getCard().getId());
+        assertEquals(64, megamorph.getProbability());
     }
     
     @Test
     public void testDuelistSAPow() {
         Duelist meadow = db.getDuelist(Duelist.Name.MEADOW_MAGE);
         Pool.Entry mbd = meadow.getPool(Pool.Type.SA_POW).getEntry(713);
-        assertEquals(713, mbd.card().id());
-        assertEquals(20, mbd.probability());
+        assertEquals(713, mbd.getCard().getId());
+        assertEquals(20, mbd.getProbability());
     }
     
     @Test
     public void testDuelistBCD() {
         Duelist v2 = db.getDuelist(Duelist.Name.VILLAGER_2);
         Pool.Entry dragonZombie = v2.getPool(Pool.Type.BCD).getEntry(97);
-        assertEquals(97, dragonZombie.card().id());
-        assertEquals(26, dragonZombie.probability());
+        assertEquals(97, dragonZombie.getCard().getId());
+        assertEquals(26, dragonZombie.getProbability());
     }
     
     @Test
@@ -201,8 +201,8 @@ public class FMDBTest {
         Duelist seto3 = db.getDuelist(Duelist.Name.SETO_3);
         Card bewd = seto3.getPool(Pool.Type.DECK).getDrop(119);
         Card summonedSkull = seto3.getPool(Pool.Type.DECK).getDrop(120);
-        assertEquals(1, bewd.id());
-        assertEquals(22, summonedSkull.id());
+        assertEquals(1, bewd.getId());
+        assertEquals(22, summonedSkull.getId());
     }
     
 }

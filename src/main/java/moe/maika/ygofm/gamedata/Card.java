@@ -23,47 +23,322 @@
  */
 package moe.maika.ygofm.gamedata;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A representation of a card in Forbidden Memories. Do not instantiate this class;
- * use {@link FMDB} to obtain card objects.
+ * A representation of a card in Forbidden Memories. Use {@link FMDB#getCard(int)} and
+ * related methods to obtain card instances. The card instances are immutable and
+ * thread-safe.
  * @author sg4e
  */
-public record Card(
+public class Card {
     @JsonProperty("cardId")
-    int id,
+    private final int id;
     @JsonProperty("cardName")
-    String name,
+    private final String name;
     @JsonProperty("starchipCost")
-    int starchips,
-    int level,
-    int attack,
-    int defense,
+    private final int starchips;
+    private final int level;
+    private final int attack;
+    private final int defense;
     @JsonProperty("guardianStar1")
-    GuardianStar firstGuardianStar,
+    private final GuardianStar firstGuardianStar;
     @JsonProperty("guardianStar2")
-    GuardianStar secondGuardianStar,
-    String description, 
-    String type,
-    String attribute,
-    String password,
+    private final GuardianStar secondGuardianStar;
+    private final String description;
+    private final String type;
+    private final String attribute;
+    private final String password;
     //values relevant for sorting
-    int abcSort,
-    int maxSort,
-    int atkSort,
-    int defSort,
-    int typeSort,
-    int aiSort,
+    private final int abcSort;
+    private final int maxSort;
+    private final int atkSort;
+    private final int defSort;
+    private final int typeSort;
+    private final int aiSort;
     //Japanese sort values
-    int jpAbcSort,
-    int jpMaxSort,
-    int jpAtkSort,
-    int jpDefSort,
-    int jpTypeSort
-    )  {
-    public boolean canEquip(Card equip, FMDB db) {
-        return db.isEquippable(this, equip);
+    private final int jpAbcSort;
+    private final int jpMaxSort;
+    private final int jpAtkSort;
+    private final int jpDefSort;
+    private final int jpTypeSort;
+
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    private Card(
+        @JsonProperty("cardId")
+        int id,
+        @JsonProperty("cardName")
+        String name,
+        @JsonProperty("starchipCost")
+        int starchips,
+        @JsonProperty("level")
+        int level,
+        @JsonProperty("attack")
+        int attack,
+        @JsonProperty("defense")
+        int defense,
+        @JsonProperty("guardianStar1")
+        GuardianStar firstGuardianStar,
+        @JsonProperty("guardianStar2")
+        GuardianStar secondGuardianStar,
+        @JsonProperty("description")
+        String description,
+        @JsonProperty("type")
+        String type,
+        @JsonProperty("attribute")
+        String attribute,
+        @JsonProperty("password")
+        String password,
+        @JsonProperty("abcSort")
+        int abcSort,
+        @JsonProperty("maxSort")
+        int maxSort,
+        @JsonProperty("atkSort")
+        int atkSort,
+        @JsonProperty("defSort")
+        int defSort,
+        @JsonProperty("typeSort")
+        int typeSort,
+        @JsonProperty("aiSort")
+        int aiSort,
+        @JsonProperty("jpAbcSort")
+        int jpAbcSort,
+        @JsonProperty("jpMaxSort")
+        int jpMaxSort,
+        @JsonProperty("jpAtkSort")
+        int jpAtkSort,
+        @JsonProperty("jpDefSort")
+        int jpDefSort,
+        @JsonProperty("jpTypeSort")
+        int jpTypeSort) {
+        this.id = id;
+        this.name = name;
+        this.starchips = starchips;
+        this.level = level;
+        this.attack = attack;
+        this.defense = defense;
+        this.firstGuardianStar = firstGuardianStar;
+        this.secondGuardianStar = secondGuardianStar;
+        this.description = description;
+        this.type = type;
+        this.attribute = attribute;
+        this.password = password;
+        this.abcSort = abcSort;
+        this.maxSort = maxSort;
+        this.atkSort = atkSort;
+        this.defSort = defSort;
+        this.typeSort = typeSort;
+        this.aiSort = aiSort;
+        this.jpAbcSort = jpAbcSort;
+        this.jpMaxSort = jpMaxSort;
+        this.jpAtkSort = jpAtkSort;
+        this.jpDefSort = jpDefSort;
+        this.jpTypeSort = jpTypeSort;
+    }
+
+    /**
+     * Returns the ID of the card.
+     * @return the ID of the card
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Returns the name of the card.
+     * @return the name of the card
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns the starchip cost of the card.
+     * @return the starchip cost of the card
+     */
+    public int getStarchips() {
+        return starchips;
+    }
+
+    /**
+     * Returns the level of the card.
+     * @return the level of the card
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * Returns the attack points of the card.
+     * @return the attack of the card
+     */
+    public int getAttack() {
+        return attack;
+    }
+
+    /**
+     * Returns the defense points of the card.
+     * @return the defense of the card
+     */
+    public int getDefense() {
+        return defense;
+    }
+
+    /**
+     * Returns the primary Guardian Star of the card.
+     * @return the pirst Guardian Star of the card
+     */
+    public GuardianStar getFirstGuardianStar() {
+        return firstGuardianStar;
+    }
+
+    /**
+     * Returns the secondary Guardian Star of the card.
+     * @return the secondary Guardian Star of the card
+     */
+    public GuardianStar getSecondGuardianStar() {
+        return secondGuardianStar;
+    }
+
+    /**
+     * Returns the in-game description of the card, with line-breaks preserved.
+     * @return the description of the card
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Returns the type of the card. See fields in {@link FDDB} for possible values.
+     * @return the type of the card
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * Returns the attribute of the card.
+     * @return the attribute of the card
+     */
+    public String getAttribute() {
+        return attribute;
+    }
+
+    /**
+     * Returns the password of the card.
+     * @return the password of the card
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * alphabetically.
+     * @return the ABC sort value of the card
+     */
+    public int getAbcSort() {
+        return abcSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its max sort value.
+     * @return the max sort value of the card
+     */
+    public int getMaxSort() {
+        return maxSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its attack points.
+     * @return the attack sort value of the card
+     */
+    public int getAtkSort() {
+        return atkSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its defense points.
+     * @return the defense sort value of the card
+     */
+    public int getDefSort() {
+        return defSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its type.
+     * @return the type sort value of the card
+     */
+    public int getTypeSort() {
+        return typeSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its AI sort value.
+     * @return the AI sort value of the card
+     */
+    public int getAiSort() {
+        return aiSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * lexicographically in Japanese.
+     * @return the Japanese ABC sort value of the card
+     */
+    public int getJpAbcSort() {
+        return jpAbcSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its max sort value in Japanese release.
+     * @return the Japanese max sort value of the card
+     */
+    public int getJpMaxSort() {
+        return jpMaxSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its attack points in Japanese release.
+     * @return the Japanese attack sort value of the card
+     */
+    public int getJpAtkSort() {
+        return jpAtkSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its defense points in Japanese release.
+     * @return the Japanese defense sort value of the card
+     */
+    public int getJpDefSort() {
+        return jpDefSort;
+    }
+
+    /**
+     * Returns the ordinal value of this card in the full list of cards when sorted
+     * by its type in Japanese release.
+     * @return the Japanese type sort value of the card
+     */
+    public int getJpTypeSort() {
+        return jpTypeSort;
+    }
+
+    /**
+     * Returns whether this card can be equipped with the given equip card. The FMDB
+     * will be loaded if it has not been already.
+     * @return true if this card can be equipped with the given equip card
+     */
+    public boolean canEquip(Card equip) {
+        return FMDB.getInstance().isEquippable(this, equip);
     }
 
     /**
@@ -72,6 +347,6 @@ public record Card(
      */
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
 }

@@ -44,7 +44,7 @@ public class Pool {
     private final SortedMap<Integer, Entry> entries;
 
     Pool(Collection<Entry> data) {
-        entries = new TreeMap<>(data.stream().collect(Collectors.toMap(e -> e.card().id(), Function.identity())));
+        entries = new TreeMap<>(data.stream().collect(Collectors.toMap(e -> e.getCard().getId(), Function.identity())));
     }
 
     /**
@@ -73,9 +73,9 @@ public class Pool {
         rand = rand % 2048;
         for(Map.Entry<Integer,Entry> mapEntry : entries.entrySet()) {
             Entry e = mapEntry.getValue();
-            rand -= e.probability();
+            rand -= e.getProbability();
             if(rand < 0)
-                return e.card();
+                return e.getCard();
         }
         //returns null if bugged or if droppool is missing entries
         return null;
@@ -105,7 +105,7 @@ public class Pool {
      * @return the entry for the given card
      */
     public Entry getEntry(Card card) {
-        return getEntry(card.id());
+        return getEntry(card.getId());
     }
 
     /**
@@ -126,21 +126,58 @@ public class Pool {
     }
 
     /**
-     * A record representing a card and its probability of being dropped. The
+     * An immutable class representing a card and its probability of being dropped. The
      * probability is out of 2048.
      */
-    public record Entry(Card card, int probability) {};
+    public static class Entry {
+        private final Card card;
+        private final int probability;
+
+        Entry(Card card, int probability) {
+            this.card = card;
+            this.probability = probability;
+        }
+
+        /**
+         * Returns the card encapsulated by this entry.
+         * @return the card
+         */
+        public Card getCard() {
+            return card;
+        }
+
+        /**
+         * Returns the probability of the card being dropped.
+         * @return the probability of the card being dropped
+         */
+        public int getProbability() {
+            return probability;
+        }
+    }
 
     /**
      * The type of drop pool.
      */
     public static enum Type {
+
+        /**
+         * The pool of cards is sampled to create the AI's deck.
+         */
         @JsonProperty("Deck")
         DECK("Deck"),
+        /**
+         * The pool of cards the generate the drop for an SA_POW duel rank.
+         */
         @JsonProperty("SAPow")
         SA_POW("SAPow"),
+        /**
+         * The pool of cards the generate the drop for a BCD duel rank.
+         */
         @JsonProperty("BCD")
         BCD("BCD"),
+        /**
+         * The pool of cards the generate the drop for an SA_TEC duel rank.
+         */
         @JsonProperty("SATec")
         SA_TEC("SATec");
         

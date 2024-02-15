@@ -41,11 +41,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * The entry point for querying FM game data. This class is a singleton and
  * should be accessed via the {@link #getInstance()} method.
  * <br><br>
- * Use this class to instantiate Card and Duelist objects and do not use those
- * classes' constructors directly. The behavior of any methods in this class
- * when passed objects not created by this class is undefined.
+ * Use this class to instantiate Card and Duelist objects.
  * <br><br>
- * This class is thread-safe.
+ * This class is thread-safe. All classes in this library are thread-safe unless
+ * otherwise noted.
  * @author sg4e
  */
 public class FMDB {
@@ -89,15 +88,15 @@ public class FMDB {
         catch(Exception e) {
             throw new RuntimeException("Failed to load FM database info from JSON files", e);
         }
-        cardMap = cardList.stream().collect(Collectors.toMap(Card::id, Function.identity()));
-        Map<Integer,List<JsonPool>> duelistIdToPools = rawPools.stream().collect(Collectors.groupingBy(JsonPool::duelist));
+        cardMap = cardList.stream().collect(Collectors.toMap(Card::getId, Function.identity()));
+        Map<Integer,List<JsonPool>> duelistIdToPools = rawPools.stream().collect(Collectors.groupingBy(JsonPool::getDuelist));
         Map<Integer,Duelist.Name> idToName = Arrays.stream(Duelist.Name.values()).collect(Collectors.toMap(Duelist.Name::getId, Function.identity()));
         duelistMap = duelistIdToPools.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                 e -> new Duelist(idToName.get(e.getKey()), e.getValue().stream().collect(
-                    Collectors.groupingBy(JsonPool::type)).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                    e2 -> new Pool(e2.getValue().stream().map(p -> new Pool.Entry(cardMap.get(p.cardId()), p.probability())).collect(Collectors.toList())))))));
-        fusionMap = rawFusions.stream().collect(Collectors.groupingBy(JsonFusion::material1, Collectors.toMap(JsonFusion::material2, i -> cardMap.get(i.result()))));
-        equipMap = rawEquips.stream().collect(Collectors.groupingBy(JsonEquip::equipId, Collectors.mapping(JsonEquip::cardId, Collectors.toSet())));
+                    Collectors.groupingBy(JsonPool::getType)).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    e2 -> new Pool(e2.getValue().stream().map(p -> new Pool.Entry(cardMap.get(p.getCardId()), p.getProbability())).collect(Collectors.toList())))))));
+        fusionMap = rawFusions.stream().collect(Collectors.groupingBy(JsonFusion::getMaterial1, Collectors.toMap(JsonFusion::getMaterial2, i -> cardMap.get(i.getResult()))));
+        equipMap = rawEquips.stream().collect(Collectors.groupingBy(JsonEquip::getEquipId, Collectors.mapping(JsonEquip::getCardId, Collectors.toSet())));
     }
     
     /**
@@ -170,7 +169,7 @@ public class FMDB {
     public Card fuse(Card firstCard, Card secondCard) {
         if(firstCard == null || secondCard == null)
             throw new IllegalArgumentException("cards cannot be null");
-        Card result = fuseImpl(firstCard.id(), secondCard.id());
+        Card result = fuseImpl(firstCard.getId(), secondCard.getId());
         if(result == null)
             return secondCard;
         return result;
@@ -183,7 +182,7 @@ public class FMDB {
      * @return the result of fusing the two cards, or null if no fusion is possible
      */
     public Card fuseOrNull(Card firstCard, Card secondCard) {
-        return fuseImpl(firstCard.id(), secondCard.id());
+        return fuseImpl(firstCard.getId(), secondCard.getId());
     }
     
     /**
@@ -193,14 +192,14 @@ public class FMDB {
      * @return true if the monster can be equipped with the equip
      */
     public boolean isEquippable(Card monster, Card equip) {
-        if(!EQUIP_TYPE.equals(equip.type()))
-            throw new IllegalArgumentException(equip.name() + " is not an equip");
-        if(NON_MONSTER_TYPES.contains(monster.type()))
-            throw new IllegalArgumentException(monster.name() + " is not a monster");
-        Set<Integer> equippableCards = equipMap.get(equip.id());
+        if(!EQUIP_TYPE.equals(equip.getType()))
+            throw new IllegalArgumentException(equip.getName() + " is not an equip");
+        if(NON_MONSTER_TYPES.contains(monster.getType()))
+            throw new IllegalArgumentException(monster.getName() + " is not a monster");
+        Set<Integer> equippableCards = equipMap.get(equip.getId());
         if(equippableCards == null)
             return false;
-        return equippableCards.contains(monster.id());
+        return equippableCards.contains(monster.getId());
     }
     
     /**
