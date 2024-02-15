@@ -147,8 +147,8 @@ public class Pool {
         }
 
         /**
-         * Returns the probability of the card being dropped.
-         * @return the probability of the card being dropped
+         * Returns the probability of the card being dropped (out of 2048).
+         * @return the probability of the card being dropped (out of 2048)
          */
         public int getProbability() {
             return probability;
