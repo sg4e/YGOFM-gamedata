@@ -44,7 +44,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Use this class to instantiate Card and Duelist objects.
  * <br><br>
  * This class is thread-safe. All classes in this library are thread-safe unless
- * otherwise noted.
+ * otherwise noted, even if they do not explicitly state they are thread-safe.
  * @author sg4e
  */
 public class FMDB {
@@ -66,7 +66,7 @@ public class FMDB {
             EQUIP_TYPE
     ).collect(Collectors.toSet()));
 
-    private static FMDB singleton;
+    private static volatile FMDB singleton;
     
     private FMDB() {
         ObjectMapper jsonMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -203,13 +203,25 @@ public class FMDB {
     }
     
     /**
-     * Gets the singleton instance of FMDB.
+     * Gets the singleton instance of FMDB. If the database has not been loaded yet,
+     * this method will load it.
+     * <p>
+     * This method can safely be called from any thread;
+     * initialization is synchronized and will only occur once. Access after initialization
+     * does not incur any synchronization overhead since the double-checked locking
+     * optimization idiom is used internally.
      * @return the singleton instance of FMDB
      */
-    public static synchronized FMDB getInstance() {
-        if(singleton == null) {
-            singleton = new FMDB();
+    public static FMDB getInstance() {
+        FMDB localRef = singleton;
+        if(localRef == null) {
+            synchronized(FMDB.class) {
+                localRef = singleton;
+                if(localRef == null) {
+                    singleton = localRef = new FMDB();
+                }
+            }
         }
-        return singleton;
+        return localRef;
     }
 }
