@@ -30,8 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -245,7 +246,10 @@ public class FMDBTest {
         Ritual hamburgerRecipe = db.getRitual(677);
         assertEquals(677, hamburgerRecipe.getRitualCard().getId());
         assertEquals(702, hamburgerRecipe.getResult().getId());
-        List<Integer> materialIds = List.of(547, 295, 14);
+        List<Integer> materialIds = new ArrayList<>(3);
+        materialIds.add(547);
+        materialIds.add(295);
+        materialIds.add(14);
         materialIds.forEach(id -> assertTrue(hamburgerRecipe.getMaterials().stream().anyMatch(c -> c.getId() == id)));
     }
     
