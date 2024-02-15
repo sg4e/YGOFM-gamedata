@@ -81,13 +81,13 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
+<dt><a href="moe/maika/ygofm/gamedata/Card.html#canBeEquippedWith(moe.maika.ygofm.gamedata.Card)" class="member-name-link">canBeEquippedWith(Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
+<dd>
+<div class="block">Returns whether this card can be equipped with the given equip card.</div>
+</dd>
 <dt><a href="moe/maika/ygofm/gamedata/SeedSearch.html#cancel()" class="member-name-link">cancel()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/SeedSearch.html" title="class in moe.maika.ygofm.gamedata">SeedSearch</a></dt>
 <dd>
 <div class="block">Cancels the search.</div>
-</dd>
-<dt><a href="moe/maika/ygofm/gamedata/Card.html#canEquip(moe.maika.ygofm.gamedata.Card)" class="member-name-link">canEquip(Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
-<dd>
-<div class="block">Returns whether this card can be equipped with the given equip card.</div>
 </dd>
 <dt><a href="moe/maika/ygofm/gamedata/Card.html" class="type-name-link" title="class in moe.maika.ygofm.gamedata">Card</a> - Class in <a href="moe/maika/ygofm/gamedata/package-summary.html">moe.maika.ygofm.gamedata</a></dt>
 <dd>
@@ -153,6 +153,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="moe/maika/ygofm/gamedata/FMDB.html#EQUIP_TYPE" class="member-name-link">EQUIP_TYPE</a> - Static variable in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="moe/maika/ygofm/gamedata/Card.html#equips(moe.maika.ygofm.gamedata.Card)" class="member-name-link">equips(Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
+<dd>
+<div class="block">Returns whether this equip card can be successfully equipped to the given monster.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:F">F</h2>
 <dl class="index">
@@ -171,9 +175,17 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Performs a fusion or returns the second card if no fusion is possible.</div>
 </dd>
+<dt><a href="moe/maika/ygofm/gamedata/Card.html#fuseOrNull(moe.maika.ygofm.gamedata.Card)" class="member-name-link">fuseOrNull(Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
+<dd>
+<div class="block">Returns the result of fusing this card with another card, or null if no fusion is possible.</div>
+</dd>
 <dt><a href="moe/maika/ygofm/gamedata/FMDB.html#fuseOrNull(moe.maika.ygofm.gamedata.Card,moe.maika.ygofm.gamedata.Card)" class="member-name-link">fuseOrNull(Card, Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></dt>
 <dd>
 <div class="block">Performs a fusion or returns null if no fusion is possible.</div>
+</dd>
+<dt><a href="moe/maika/ygofm/gamedata/Card.html#fuseWith(moe.maika.ygofm.gamedata.Card)" class="member-name-link">fuseWith(Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
+<dd>
+<div class="block">Returns the result of fusing this card with another card.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:G">G</h2>
@@ -207,6 +219,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="moe/maika/ygofm/gamedata/Pool.html#getAllEntries(java.util.function.Predicate)" class="member-name-link">getAllEntries(Predicate&lt;Pool.Entry&gt;)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Pool.html" title="class in moe.maika.ygofm.gamedata">Pool</a></dt>
 <dd>
 <div class="block">Returns all entries in this pool that match the given filter.</div>
+</dd>
+<dt><a href="moe/maika/ygofm/gamedata/FMDB.html#getAllRituals()" class="member-name-link">getAllRituals()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></dt>
+<dd>
+<div class="block">Returns all rituals in the game.</div>
 </dd>
 <dt><a href="moe/maika/ygofm/gamedata/Deck.html#getAllSorts()" class="member-name-link">getAllSorts()</a> - Static method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Deck.html" title="class in moe.maika.ygofm.gamedata">Deck</a></dt>
 <dd>
@@ -323,6 +339,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the level of the card.</div>
 </dd>
+<dt><a href="moe/maika/ygofm/gamedata/Ritual.html#getMaterials()" class="member-name-link">getMaterials()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Ritual.html" title="class in moe.maika.ygofm.gamedata">Ritual</a></dt>
+<dd>
+<div class="block">Returns the materials required to perform this ritual.</div>
+</dd>
 <dt><a href="moe/maika/ygofm/gamedata/Card.html#getMaxSort()" class="member-name-link">getMaxSort()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
 <dd>
 <div class="block">Returns the ordinal value of this card in the full list of cards when sorted
@@ -351,6 +371,22 @@ loadScripts(document, 'script');</script>
 <dt><a href="moe/maika/ygofm/gamedata/Deck.html#getRange(int,int)" class="member-name-link">getRange(int, int)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Deck.html" title="class in moe.maika.ygofm.gamedata">Deck</a></dt>
 <dd>
 <div class="block">Gets the range of cards in the deck from the given start index to the given end index.</div>
+</dd>
+<dt><a href="moe/maika/ygofm/gamedata/Ritual.html#getResult()" class="member-name-link">getResult()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Ritual.html" title="class in moe.maika.ygofm.gamedata">Ritual</a></dt>
+<dd>
+<div class="block">Returns the result of this ritual.</div>
+</dd>
+<dt><a href="moe/maika/ygofm/gamedata/FMDB.html#getRitual(int)" class="member-name-link">getRitual(int)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></dt>
+<dd>
+<div class="block">Returns the <code>Ritual</code> that is activated by the given ritual card id.</div>
+</dd>
+<dt><a href="moe/maika/ygofm/gamedata/FMDB.html#getRitual(moe.maika.ygofm.gamedata.Card)" class="member-name-link">getRitual(Card)</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></dt>
+<dd>
+<div class="block">Returns the <code>Ritual</code> that is activated by the given ritual card.</div>
+</dd>
+<dt><a href="moe/maika/ygofm/gamedata/Ritual.html#getRitualCard()" class="member-name-link">getRitualCard()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Ritual.html" title="class in moe.maika.ygofm.gamedata">Ritual</a></dt>
+<dd>
+<div class="block">Returns the ritual card that activates this ritual.</div>
 </dd>
 <dt><a href="moe/maika/ygofm/gamedata/Card.html#getSecondGuardianStar()" class="member-name-link">getSecondGuardianStar()</a> - Method in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Card.html" title="class in moe.maika.ygofm.gamedata">Card</a></dt>
 <dd>
@@ -540,6 +576,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="moe/maika/ygofm/gamedata/Duelist.Name.html#REX" class="member-name-link">REX</a> - Enum constant in enum class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/Duelist.Name.html" title="enum class in moe.maika.ygofm.gamedata">Duelist.Name</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="moe/maika/ygofm/gamedata/Ritual.html" class="type-name-link" title="class in moe.maika.ygofm.gamedata">Ritual</a> - Class in <a href="moe/maika/ygofm/gamedata/package-summary.html">moe.maika.ygofm.gamedata</a></dt>
+<dd>
+<div class="block">A representation of a ritual in Forbidden Memories.</div>
+</dd>
 <dt><a href="moe/maika/ygofm/gamedata/FMDB.html#RITUAL_TYPE" class="member-name-link">RITUAL_TYPE</a> - Static variable in class moe.maika.ygofm.gamedata.<a href="moe/maika/ygofm/gamedata/FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="moe/maika/ygofm/gamedata/RNG.html" class="type-name-link" title="class in moe.maika.ygofm.gamedata">RNG</a> - Class in <a href="moe/maika/ygofm/gamedata/package-summary.html">moe.maika.ygofm.gamedata</a></dt>
