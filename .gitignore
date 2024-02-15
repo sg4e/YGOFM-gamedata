@@ -7,5 +7,6 @@ build
 .nb-gradle/
 .vscode
 nbproject
+gradle.properties
 
 bin
