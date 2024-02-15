@@ -23,9 +23,6 @@
  */
 package moe.maika.ygofm.gamedata;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * A representation of a card in Forbidden Memories. Use {@link FMDB#getCard(int)} and
  * related methods to obtain card instances. The card instances are immutable and
@@ -33,18 +30,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author sg4e
  */
 public class Card {
-    @JsonProperty("cardId")
     private final int id;
-    @JsonProperty("cardName")
     private final String name;
-    @JsonProperty("starchipCost")
     private final int starchips;
     private final int level;
     private final int attack;
     private final int defense;
-    @JsonProperty("guardianStar1")
     private final GuardianStar firstGuardianStar;
-    @JsonProperty("guardianStar2")
     private final GuardianStar secondGuardianStar;
     private final String description;
     private final String type;
@@ -64,54 +56,10 @@ public class Card {
     private final int jpDefSort;
     private final int jpTypeSort;
 
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    private Card(
-        @JsonProperty("cardId")
-        int id,
-        @JsonProperty("cardName")
-        String name,
-        @JsonProperty("starchipCost")
-        int starchips,
-        @JsonProperty("level")
-        int level,
-        @JsonProperty("attack")
-        int attack,
-        @JsonProperty("defense")
-        int defense,
-        @JsonProperty("guardianStar1")
-        GuardianStar firstGuardianStar,
-        @JsonProperty("guardianStar2")
-        GuardianStar secondGuardianStar,
-        @JsonProperty("description")
-        String description,
-        @JsonProperty("type")
-        String type,
-        @JsonProperty("attribute")
-        String attribute,
-        @JsonProperty("password")
-        String password,
-        @JsonProperty("abcSort")
-        int abcSort,
-        @JsonProperty("maxSort")
-        int maxSort,
-        @JsonProperty("atkSort")
-        int atkSort,
-        @JsonProperty("defSort")
-        int defSort,
-        @JsonProperty("typeSort")
-        int typeSort,
-        @JsonProperty("aiSort")
-        int aiSort,
-        @JsonProperty("jpAbcSort")
-        int jpAbcSort,
-        @JsonProperty("jpMaxSort")
-        int jpMaxSort,
-        @JsonProperty("jpAtkSort")
-        int jpAtkSort,
-        @JsonProperty("jpDefSort")
-        int jpDefSort,
-        @JsonProperty("jpTypeSort")
-        int jpTypeSort) {
+    Card(int id, String name, String description, GuardianStar firstGuardianStar, GuardianStar secondGuardianStar, int level,
+    String type, int attack, int defense, String attribute, String password, int starchips,
+    int abcSort, int maxSort, int atkSort, int defSort, int typeSort, int aiSort,
+    int jpAbcSort, int jpMaxSort, int jpAtkSort, int jpDefSort, int jpTypeSort) {
         this.id = id;
         this.name = name;
         this.starchips = starchips;

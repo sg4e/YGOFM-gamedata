@@ -18,24 +18,38 @@
  */
 package moe.maika.ygofm.gamedata;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-class JsonEquip {
-    private final int equipId;
+class RawDropPool {
+    private final int poolId;
+    private final int duelist;
+    private final Pool.Type type;
     private final int cardId;
+    private final int probability;
 
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    private JsonEquip(@JsonProperty("equipId") int equipId, @JsonProperty("cardId") int cardId) {
-        this.equipId = equipId;
+    RawDropPool(int poolId, int duelist, Pool.Type type, int cardId, int probability) {
+        this.poolId = poolId;
+        this.duelist = duelist;
+        this.type = type;
         this.cardId = cardId;
+        this.probability = probability;
     }
 
-    public int getEquipId() {
-        return equipId;
+    public int getPoolId() {
+        return poolId;
+    }
+
+    public int getDuelist() {
+        return duelist;
+    }
+
+    public Pool.Type getType() {
+        return type;
     }
 
     public int getCardId() {
         return cardId;
+    }
+
+    public int getProbability() {
+        return probability;
     }
 }

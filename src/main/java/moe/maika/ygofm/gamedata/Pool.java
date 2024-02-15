@@ -33,8 +33,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * Implementation of drop pools.
  * @author sg4e
@@ -163,22 +161,18 @@ public class Pool {
         /**
          * The pool of cards is sampled to create the AI's deck.
          */
-        @JsonProperty("Deck")
         DECK("Deck"),
         /**
          * The pool of cards the generate the drop for an SA_POW duel rank.
          */
-        @JsonProperty("SAPow")
         SA_POW("SAPow"),
         /**
          * The pool of cards the generate the drop for a BCD duel rank.
          */
-        @JsonProperty("BCD")
         BCD("BCD"),
         /**
          * The pool of cards the generate the drop for an SA_TEC duel rank.
          */
-        @JsonProperty("SATec")
         SA_TEC("SATec");
         
         private final String name;

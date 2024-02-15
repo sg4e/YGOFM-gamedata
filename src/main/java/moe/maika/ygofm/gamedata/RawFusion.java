@@ -18,16 +18,12 @@
  */
 package moe.maika.ygofm.gamedata;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-class JsonFusion {
+class RawFusion {
     private final int material1;
     private final int material2;
     private final int result;
 
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    private JsonFusion(@JsonProperty("material1") int material1, @JsonProperty("material2") int material2, @JsonProperty("result") int result) {
+    RawFusion(int material1, int material2,  int result) {
         this.material1 = material1;
         this.material2 = material2;
         this.result = result;

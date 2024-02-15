@@ -23,8 +23,6 @@
  */
 package moe.maika.ygofm.gamedata;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The Guardian Stars in Forbidden Memories. Each Guardian Star has a strength and a weakness.
  * @author sg4e
@@ -116,7 +114,6 @@ public enum GuardianStar {
     }
 
     @Override
-    @JsonValue
     public String toString() {
         return name;
     }

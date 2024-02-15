@@ -1,0 +1,197 @@
+[
+    {
+        "duelistId": 12,
+        "duelist": "Bandit Keith",
+        "handSize": 12
+    },
+    {
+        "duelistId": 37,
+        "duelist": "DarkNite",
+        "handSize": 20
+    },
+    {
+        "duelistId": 27,
+        "duelist": "Desert Mage",
+        "handSize": 14
+    },
+    {
+        "duelistId": 39,
+        "duelist": "Duel Master K",
+        "handSize": 15
+    },
+    {
+        "duelistId": 23,
+        "duelist": "Forest Mage",
+        "handSize": 14
+    },
+    {
+        "duelistId": 34,
+        "duelist": "Guardian Neku",
+        "handSize": 20
+    },
+    {
+        "duelistId": 33,
+        "duelist": "Guardian Sebek",
+        "handSize": 20
+    },
+    {
+        "duelistId": 8,
+        "duelist": "Heishin",
+        "handSize": 20
+    },
+    {
+        "duelistId": 35,
+        "duelist": "Heishin 2nd",
+        "handSize": 20
+    },
+    {
+        "duelistId": 24,
+        "duelist": "High Mage Anubisius",
+        "handSize": 16
+    },
+    {
+        "duelistId": 26,
+        "duelist": "High Mage Atenza",
+        "handSize": 16
+    },
+    {
+        "duelistId": 30,
+        "duelist": "High Mage Kepura",
+        "handSize": 16
+    },
+    {
+        "duelistId": 28,
+        "duelist": "High Mage Martis",
+        "handSize": 16
+    },
+    {
+        "duelistId": 22,
+        "duelist": "High Mage Secmeton",
+        "handSize": 16
+    },
+    {
+        "duelistId": 16,
+        "duelist": "Isis",
+        "handSize": 16
+    },
+    {
+        "duelistId": 3,
+        "duelist": "Jono",
+        "handSize": 5
+    },
+    {
+        "duelistId": 19,
+        "duelist": "Jono 2nd",
+        "handSize": 10
+    },
+    {
+        "duelistId": 17,
+        "duelist": "Kaiba",
+        "handSize": 16
+    },
+    {
+        "duelistId": 31,
+        "duelist": "Labyrinth Mage",
+        "handSize": 16
+    },
+    {
+        "duelistId": 18,
+        "duelist": "Mage Soldier",
+        "handSize": 12
+    },
+    {
+        "duelistId": 11,
+        "duelist": "Mai Valentine",
+        "handSize": 10
+    },
+    {
+        "duelistId": 29,
+        "duelist": "Meadow Mage",
+        "handSize": 14
+    },
+    {
+        "duelistId": 25,
+        "duelist": "Mountain Mage",
+        "handSize": 14
+    },
+    {
+        "duelistId": 38,
+        "duelist": "Nitemare",
+        "handSize": 20
+    },
+    {
+        "duelistId": 21,
+        "duelist": "Ocean Mage",
+        "handSize": 14
+    },
+    {
+        "duelistId": 15,
+        "duelist": "Pegasus",
+        "handSize": 16
+    },
+    {
+        "duelistId": 9,
+        "duelist": "Rex Raptor",
+        "handSize": 8
+    },
+    {
+        "duelistId": 7,
+        "duelist": "Seto",
+        "handSize": 10
+    },
+    {
+        "duelistId": 32,
+        "duelist": "Seto 2nd",
+        "handSize": 18
+    },
+    {
+        "duelistId": 36,
+        "duelist": "Seto 3rd",
+        "handSize": 20
+    },
+    {
+        "duelistId": 13,
+        "duelist": "Shadi",
+        "handSize": 12
+    },
+    {
+        "duelistId": 1,
+        "duelist": "Simon Muran",
+        "handSize": 5
+    },
+    {
+        "duelistId": 2,
+        "duelist": "Teana",
+        "handSize": 5
+    },
+    {
+        "duelistId": 20,
+        "duelist": "Teana 2nd",
+        "handSize": 10
+    },
+    {
+        "duelistId": 4,
+        "duelist": "Villager1",
+        "handSize": 5
+    },
+    {
+        "duelistId": 5,
+        "duelist": "Villager2",
+        "handSize": 5
+    },
+    {
+        "duelistId": 6,
+        "duelist": "Villager3",
+        "handSize": 5
+    },
+    {
+        "duelistId": 10,
+        "duelist": "Weevil Underwood",
+        "handSize": 8
+    },
+    {
+        "duelistId": 14,
+        "duelist": "Yami Bakura",
+        "handSize": 14
+    }
+]

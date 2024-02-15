@@ -33,10 +33,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * The entry point for querying FM game data. This class is a singleton and
  * should be accessed via the {@link #getInstance()} method.
@@ -69,34 +65,19 @@ public class FMDB {
     private static volatile FMDB singleton;
     
     private FMDB() {
-        ObjectMapper jsonMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        jsonMapper.findAndRegisterModules();
-        List<Card> cardList;
-        List<JsonPool> rawPools;
-        List<JsonFusion> rawFusions;
-        List<JsonEquip> rawEquips;
-        try {
-            cardList = jsonMapper.readValue(getClass().getResourceAsStream("/cardinfo.json"),
-                new TypeReference<List<Card>>(){});
-            rawPools = jsonMapper.readValue(getClass().getResourceAsStream("/droppool.json"),
-                new TypeReference<List<JsonPool>>(){});
-            rawFusions = jsonMapper.readValue(getClass().getResourceAsStream("/fusions.json"),
-                new TypeReference<List<JsonFusion>>(){});
-            rawEquips = jsonMapper.readValue(getClass().getResourceAsStream("/equipinfo.json"),
-                new TypeReference<List<JsonEquip>>(){});
-        }
-        catch(Exception e) {
-            throw new RuntimeException("Failed to load FM database info from JSON files", e);
-        }
-        cardMap = cardList.stream().collect(Collectors.toMap(Card::getId, Function.identity()));
-        Map<Integer,List<JsonPool>> duelistIdToPools = rawPools.stream().collect(Collectors.groupingBy(JsonPool::getDuelist));
+        Card[] cardList = RawDatabase.getCard();
+        RawDropPool[] rawPools = RawDatabase.getRawDropPool();
+        RawFusion[] rawFusions = RawDatabase.getRawFusion();
+        RawEquip[] rawEquips = RawDatabase.getRawEquip();
+        cardMap = Arrays.stream(cardList).collect(Collectors.toMap(Card::getId, Function.identity()));
+        Map<Integer,List<RawDropPool>> duelistIdToPools = Arrays.stream(rawPools).collect(Collectors.groupingBy(RawDropPool::getDuelist));
         Map<Integer,Duelist.Name> idToName = Arrays.stream(Duelist.Name.values()).collect(Collectors.toMap(Duelist.Name::getId, Function.identity()));
         duelistMap = duelistIdToPools.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                 e -> new Duelist(idToName.get(e.getKey()), e.getValue().stream().collect(
-                    Collectors.groupingBy(JsonPool::getType)).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Collectors.groupingBy(RawDropPool::getType)).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
                     e2 -> new Pool(e2.getValue().stream().map(p -> new Pool.Entry(cardMap.get(p.getCardId()), p.getProbability())).collect(Collectors.toList())))))));
-        fusionMap = rawFusions.stream().collect(Collectors.groupingBy(JsonFusion::getMaterial1, Collectors.toMap(JsonFusion::getMaterial2, i -> cardMap.get(i.getResult()))));
-        equipMap = rawEquips.stream().collect(Collectors.groupingBy(JsonEquip::getEquipId, Collectors.mapping(JsonEquip::getCardId, Collectors.toSet())));
+        fusionMap = Arrays.stream(rawFusions).collect(Collectors.groupingBy(RawFusion::getMaterial1, Collectors.toMap(RawFusion::getMaterial2, i -> cardMap.get(i.getResult()))));
+        equipMap = Arrays.stream(rawEquips).collect(Collectors.groupingBy(RawEquip::getEquipId, Collectors.mapping(RawEquip::getCardId, Collectors.toSet())));
     }
     
     /**
