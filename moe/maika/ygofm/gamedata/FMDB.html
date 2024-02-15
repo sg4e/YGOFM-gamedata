@@ -82,7 +82,7 @@ loadScripts(document, 'script');</script>
  Use this class to instantiate Card and Duelist objects.
  <br><br>
  This class is thread-safe. All classes in this library are thread-safe unless
- otherwise noted.</div>
+ otherwise noted, even if they do not explicitly state they are thread-safe.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -371,7 +371,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getInstance()">
 <h3>getInstance</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="FMDB.html" title="class in moe.maika.ygofm.gamedata">FMDB</a></span>&nbsp;<span class="element-name">getInstance</span>()</div>
-<div class="block">Gets the singleton instance of FMDB.</div>
+<div class="block">Gets the singleton instance of FMDB. If the database has not been loaded yet,
+ this method will load it.
+ <p>
+ This method can safely be called from any thread;
+ initialization is synchronized and will only occur once. Access after initialization
+ does not incur any synchronization overhead since the double-checked locking
+ optimization idiom is used internally.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the singleton instance of FMDB</dd>
