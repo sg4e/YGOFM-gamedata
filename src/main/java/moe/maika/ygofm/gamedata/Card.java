@@ -281,12 +281,49 @@ public class Card {
     }
 
     /**
-     * Returns whether this card can be equipped with the given equip card. The FMDB
-     * will be loaded if it has not been already.
+     * Returns whether this card can be equipped with the given equip card.
+     * Use {@link #equips(Card)} for the inverse.
+     * @param equip the equip card
      * @return true if this card can be equipped with the given equip card
+     * @throws IllegalArgumentException if this card is not a monster,
+     * the given card is not an equip card, or either card is null
      */
-    public boolean canEquip(Card equip) {
+    public boolean canBeEquippedWith(Card equip) {
         return FMDB.getInstance().isEquippable(this, equip);
+    }
+
+    /**
+     * Returns whether this equip card can be successfully equipped to the given monster.
+     * Use {@link #canBeEquippedWith(Card)} for the inverse.
+     * @param monster the monster to check whether it takes this equip card
+     * @return true if the monster can take this equip card
+     * @throws IllegalArgumentException if this card is not an equip
+     * or the given card is not a monster
+     */
+    public boolean equips(Card monster) {
+        return FMDB.getInstance().isEquippable(monster, this);
+    }
+
+    /**
+     * Returns the result of fusing this card with another card. If no fusion is possible,
+     * the given card is returned, not this card. This behavior mirrors the in-game mechanic when selecting
+     * two cards to fuse.
+     * @param other the other card to fuse with
+     * @return the result of fusing the two cards, or the other card if no fusion is possible
+     * @throws IllegalArgumentException if the other card is null
+     */
+    public Card fuseWith(Card other) {
+        return FMDB.getInstance().fuse(this, other);
+    }
+
+    /**
+     * Returns the result of fusing this card with another card, or null if no fusion is possible.
+     * @param other the other card to fuse with
+     * @return the result of fusing the two cards, or null if no fusion is possible
+     * @throws IllegalArgumentException if either card is null
+     */
+    public Card fuseOrNull(Card other) {
+        return FMDB.getInstance().fuseOrNull(this, other);
     }
 
     /**

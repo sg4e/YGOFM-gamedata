@@ -159,6 +159,15 @@ public class FMDBTest {
     }
 
     @Test
+    public void testIsEquippableThrowsExceptionWithNullArgs() {
+        Card thtd = db.getCard(613);
+        Card dt = db.getCard(315);
+        assertThrows(IllegalArgumentException.class, () -> db.isEquippable(null, null));
+        assertThrows(IllegalArgumentException.class, () -> db.isEquippable(thtd, null));
+        assertThrows(IllegalArgumentException.class, () -> db.isEquippable(null, dt));
+    }
+
+    @Test
     public void testGetAllDuelists() {
         assertEquals(Arrays.stream(Duelist.Name.values()).collect(Collectors.toSet()),
                 db.getAllDuelists().stream().map(Duelist::getName).collect(Collectors.toSet()));

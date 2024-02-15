@@ -146,10 +146,11 @@ public class FMDB {
      * @param secondCard the second card of the fusion
      * @return the result of fusing the two cards, or the second card if no fusion is possible,
      * never null
+     * @throws IllegalArgumentException if either card is null
      */
     public Card fuse(Card firstCard, Card secondCard) {
         if(firstCard == null || secondCard == null)
-            throw new IllegalArgumentException("cards cannot be null");
+            throw new IllegalArgumentException("Cards cannot be null");
         Card result = fuseImpl(firstCard.getId(), secondCard.getId());
         if(result == null)
             return secondCard;
@@ -168,11 +169,17 @@ public class FMDB {
     
     /**
      * Determines whether a monster can be equipped with an equip card.
+     * Consider using {@link Card#equips(Card)} or {@link Card#canBeEquippedWith(Card)}
+     * instead to avoid parameter-ordering errors.
      * @param monster the monster to equip
      * @param equip the equip card
      * @return true if the monster can be equipped with the equip
+     * @throws IllegalArgumentException the first card is not a monster card,
+     * or the second card is not an equip card, or either card is null
      */
     public boolean isEquippable(Card monster, Card equip) {
+        if(monster == null || equip == null)
+            throw new IllegalArgumentException("Cards cannot be null");
         if(!EQUIP_TYPE.equals(equip.getType()))
             throw new IllegalArgumentException(equip.getName() + " is not an equip");
         if(NON_MONSTER_TYPES.contains(monster.getType()))
