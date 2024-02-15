@@ -210,7 +210,7 @@ public class Card {
     }
 
     /**
-     * Returns the type of the card. See fields in {@link FDDB} for possible values.
+     * Returns the type of the card. See fields in {@link FMDB} for possible values.
      * @return the type of the card
      */
     public String getType() {
