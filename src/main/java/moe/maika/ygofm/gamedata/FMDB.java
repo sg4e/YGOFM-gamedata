@@ -50,6 +50,7 @@ public class FMDB {
     // first card id -> second card id -> result card
     private final Map<Integer,Map<Integer,Card>> fusionMap;
     private final Map<Integer,Set<Integer>> equipMap;
+    private final Map<Integer,Ritual> ritualMap;
     
     public static final String RITUAL_TYPE = "Ritual";
     public static final String TRAP_TYPE = "Trap";
@@ -78,6 +79,9 @@ public class FMDB {
                     e2 -> new Pool(e2.getValue().stream().map(p -> new Pool.Entry(cardMap.get(p.getCardId()), p.getProbability())).collect(Collectors.toList())))))));
         fusionMap = Arrays.stream(rawFusions).collect(Collectors.groupingBy(RawFusion::getMaterial1, Collectors.toMap(RawFusion::getMaterial2, i -> cardMap.get(i.getResult()))));
         equipMap = Arrays.stream(rawEquips).collect(Collectors.groupingBy(RawEquip::getEquipId, Collectors.mapping(RawEquip::getCardId, Collectors.toSet())));
+        ritualMap = Arrays.stream(RawDatabase.getRawRitual()).collect(Collectors.toMap(Ritual::getRitualCardId, r -> new Ritual(r.getRitualCardId(), r.getMaterial1(), r.getMaterial2(), r.getMaterial3(), r.getResultId())));
+        //rituals still need to initialize some state that relies on the FMDB instance having been set up
+        //this is done in the getInstance() static method
     }
     
     /**
@@ -101,6 +105,7 @@ public class FMDB {
      * Gets a duelist by name.
      * @param name a duelist name
      * @return the duelist with the given name, never null
+     * @throws IllegalArgumentException if name is null
      */
     public Duelist getDuelist(Duelist.Name name) {
         if(name == null)
@@ -189,6 +194,35 @@ public class FMDB {
             return false;
         return equippableCards.contains(monster.getId());
     }
+
+    /**
+     * Returns the {@code Ritual} that is activated by the given ritual card id.
+     * @param ritualCardId the id of the ritual card
+     * @return the ritual, or null if {@code ritualCardId} is not a ritual card id
+     */
+    public Ritual getRitual(int ritualCardId) {
+        return ritualMap.get(ritualCardId);
+    }
+
+    /**
+     * Returns the {@code Ritual} that is activated by the given ritual card.
+     * @param ritualCard the ritual card
+     * @return the ritual, or null if {@code ritualCard} is not a ritual card
+     * @throws IllegalArgumentException if {@code ritualCard} is null
+     */
+    public Ritual getRitual(Card ritualCard) {
+        if(ritualCard == null)
+            throw new IllegalArgumentException("Card cannot be null");
+        return getRitual(ritualCard.getId());
+    }
+
+    /**
+     * Returns all rituals in the game.
+     * @return all rituals in the game
+     */
+    public Set<Ritual> getAllRituals() {
+        return new HashSet<>(ritualMap.values());
+    }
     
     /**
      * Gets the singleton instance of FMDB. If the database has not been loaded yet,
@@ -206,7 +240,9 @@ public class FMDB {
             synchronized(FMDB.class) {
                 localRef = singleton;
                 if(localRef == null) {
-                    singleton = localRef = new FMDB();
+                    FMDB initRituals = localRef = new FMDB();
+                    localRef.ritualMap.values().forEach(r -> r.initializeReferences(initRituals));
+                    singleton = localRef;
                 }
             }
         }

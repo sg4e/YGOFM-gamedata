@@ -42396,32 +42396,32 @@ class RawDatabase {
         arr[25145] = new RawFusion(712, 719, 39);
         return arr;
     }
-    public static RawRitual[] getRawRitual(){
-        RawRitual[] arr = new RawRitual[24];
-        arr[0] = new RawRitual(665, 255, 296, 629, 362);
-        arr[1] = new RawRitual(666, 29, 31, 101, 357);
-        arr[2] = new RawRitual(667, 371, 372, 373, 374);
-        arr[3] = new RawRitual(670, 27, 38, 58, 364);
-        arr[4] = new RawRitual(671, 85, 298, 377, 360);
-        arr[5] = new RawRitual(673, 201, 403, 483, 356);
-        arr[6] = new RawRitual(674, 186, 261, 595, 365);
-        arr[7] = new RawRitual(675, 1, 1, 1, 380);
-        arr[8] = new RawRitual(676, 249, 395, 511, 701);
-        arr[9] = new RawRitual(677, 14, 295, 547, 702);
-        arr[10] = new RawRitual(678, 3, 64, 453, 703);
-        arr[11] = new RawRitual(679, 160, 161, 535, 704);
-        arr[12] = new RawRitual(680, 6, 47, 571, 705);
-        arr[13] = new RawRitual(691, 168, 294, 604, 706);
-        arr[14] = new RawRitual(692, 89, 449, 451, 710);
-        arr[15] = new RawRitual(693, 102, 182, 220, 720);
-        arr[16] = new RawRitual(694, 178, 269, 288, 709);
-        arr[17] = new RawRitual(695, 166, 405, 416, 715);
-        arr[18] = new RawRitual(696, 52, 480, 533, 717);
-        arr[19] = new RawRitual(697, 239, 378, 621, 716);
-        arr[20] = new RawRitual(698, 266, 635, 638, 708);
-        arr[21] = new RawRitual(699, 146, 479, 485, 719);
-        arr[22] = new RawRitual(700, 436, 441, 542, 718);
-        arr[23] = new RawRitual(721, 7, 35, 417, 722);
+    public static Ritual[] getRawRitual(){
+        Ritual[] arr = new Ritual[24];
+        arr[0] = new Ritual(665, 255, 296, 629, 362);
+        arr[1] = new Ritual(666, 29, 31, 101, 357);
+        arr[2] = new Ritual(667, 371, 372, 373, 374);
+        arr[3] = new Ritual(670, 27, 38, 58, 364);
+        arr[4] = new Ritual(671, 85, 298, 377, 360);
+        arr[5] = new Ritual(673, 201, 403, 483, 356);
+        arr[6] = new Ritual(674, 186, 261, 595, 365);
+        arr[7] = new Ritual(675, 1, 1, 1, 380);
+        arr[8] = new Ritual(676, 249, 395, 511, 701);
+        arr[9] = new Ritual(677, 14, 295, 547, 702);
+        arr[10] = new Ritual(678, 3, 64, 453, 703);
+        arr[11] = new Ritual(679, 160, 161, 535, 704);
+        arr[12] = new Ritual(680, 6, 47, 571, 705);
+        arr[13] = new Ritual(691, 168, 294, 604, 706);
+        arr[14] = new Ritual(692, 89, 449, 451, 710);
+        arr[15] = new Ritual(693, 102, 182, 220, 720);
+        arr[16] = new Ritual(694, 178, 269, 288, 709);
+        arr[17] = new Ritual(695, 166, 405, 416, 715);
+        arr[18] = new Ritual(696, 52, 480, 533, 717);
+        arr[19] = new Ritual(697, 239, 378, 621, 716);
+        arr[20] = new Ritual(698, 266, 635, 638, 708);
+        arr[21] = new Ritual(699, 146, 479, 485, 719);
+        arr[22] = new Ritual(700, 436, 441, 542, 718);
+        arr[23] = new Ritual(721, 7, 35, 417, 722);
         return arr;
     }
 }

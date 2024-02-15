@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -212,6 +213,40 @@ public class FMDBTest {
         Card summonedSkull = seto3.getPool(Pool.Type.DECK).getDrop(120);
         assertEquals(1, bewd.getId());
         assertEquals(22, summonedSkull.getId());
+    }
+
+    @Test
+    public void testGetRitual() {
+        assertEquals("Hamburger Recipe", db.getCard(677).getName());
+    }
+
+    @Test
+    public void testNoRitual() {
+        assertNull(db.getRitual(1));
+    }
+
+    @Test
+    public void testRitualNullArgument() {
+        assertThrows(IllegalArgumentException.class, () -> db.getRitual(null));
+    }
+
+    @Test
+    public void testNonExistentCardAsRitual() {
+        assertNull(db.getRitual(-1));
+    }
+
+    @Test
+    public void testAllRitualsHave3Materials() {
+        db.getAllRituals().forEach(r -> assertEquals(3, r.getMaterials().size()));
+    }
+
+    @Test
+    public void testSpecificRitual() {
+        Ritual hamburgerRecipe = db.getRitual(677);
+        assertEquals(677, hamburgerRecipe.getRitualCard().getId());
+        assertEquals(702, hamburgerRecipe.getResult().getId());
+        List<Integer> materialIds = List.of(547, 295, 14);
+        materialIds.forEach(id -> assertTrue(hamburgerRecipe.getMaterials().stream().anyMatch(c -> c.getId() == id)));
     }
     
 }
