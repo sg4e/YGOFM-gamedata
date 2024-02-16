@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    tags:
+      - 'v*' # Trigger on tags starting with 'v'
 
 jobs:
   build-and-publish:
