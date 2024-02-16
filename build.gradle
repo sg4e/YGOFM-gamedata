@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'moe.maika'
-version = '1.0.0'
+version = '1.1.0'
 
 compileJava {
     sourceCompatibility = '8'
@@ -39,9 +39,20 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/sg4e/YGOFM-gamedata")
+            credentials {
+                username = 'sg4e'
+                password = GITHUB_PACKAGE_PUBLISHING_TOKEN
+            }
+        }
+    }
     publications {
         maven(MavenPublication) {
-		from components.java
+            artifactId 'ygofm-gamedata'
+		    from components.java
         }
     }
 }
