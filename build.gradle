@@ -45,7 +45,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/sg4e/YGOFM-gamedata")
             credentials {
                 username = 'sg4e'
-                password = GITHUB_PACKAGE_PUBLISHING_TOKEN
+                password = project.findProperty("GITHUB_PACKAGE_PUBLISHING_TOKEN") ?: ''
             }
         }
     }
