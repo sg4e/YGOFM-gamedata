@@ -76,8 +76,15 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SeedSearch</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">A utility for RNG Manip to search for seeds that produce a given list of draws. Use the builder to
- configure the search and then call <a href="#search()"><code>search()</code></a> to perform the search. The search is
+<div class="block">A utility to search for seeds that produce a given list of draws from the player's deck.
+ An example application of this class is to find the seed that produces a given starting hand
+ and then use that seed to generate the AI's deck and order of cards in the deck. This example
+ application can be found in the <code>examples/</code> directory in the repository. In some cases,
+ the starting hand may not be enough to narrow the search down to a single seed, so multiple
+ possible AI deck's and permutations will need to be considered, or the search can be rebuilt and
+ rerun after the player draws another card.
+ <p>
+ Use the builder to configure the search and then call <a href="#search()"><code>search()</code></a> to perform the search. The search is
  parallelized and will use as many threads as the system has available. The search space is
  defined by the start and end values, and the initial seed is used as the starting point for the
  search. The search space is defined by the number of calls to <code>rand()</code> to consider. The
