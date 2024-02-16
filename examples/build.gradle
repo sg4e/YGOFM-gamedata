@@ -17,6 +17,12 @@ task seedSearch(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task checkPool(type: JavaExec) {
+    mainClass = 'moe.maika.ygofm.gamedata.examples.CheckPoolExample'
+    group = 'example'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task runAllExamples() {
     onlyIf { gradle.startParameter.taskNames.contains("runAllExamples") }
     doLast {
