@@ -91,7 +91,7 @@ public class Pool {
     /**
      * Returns the {@link Entry} for the given card ID.
      * @param cardId
-     * @return the entry for the given card ID, or null if not a valid id
+     * @return the entry for the given card ID, or null if the card is not in the pool
      */
     public Entry getEntry(int cardId) {
         return entries.get(cardId);
@@ -100,7 +100,7 @@ public class Pool {
     /**
      * Returns the {@link Entry} for the given card.
      * @param card
-     * @return the entry for the given card
+     * @return the entry for the given card, or null if the card is not in the pool
      */
     public Entry getEntry(Card card) {
         return getEntry(card.getId());
