@@ -107,6 +107,13 @@ repositories {
 
 This project uses [SemVer](https://semver.org/) versioning. Please use only versioned releases of this project, as the API stability of the `SNAPSHOT`/`HEAD` of this repository is not guaranteed.
 
+## Looking for the raw game data?
+
+If you'd prefer to use the raw game data instead of this library, you can find all of it inside either of the following convenient formats:
++ As a SQLite database in [`sqlite/fm-sqlite3.db`](sqlite/fm-sqlite3.db)
++ As JSON files inside the [`sqlite/json`](sqlite/json) directory
+These files are no longer used for this project, as their data has been converted to Java source code, but they are preserved in this repository for their usefulness.
+
 ## Disclaimer
 
 This project is neither endorsed by nor affiliated with Konami. All Intellectual Property rights to the *Yu-Gi-Oh!* franchise and the *Forbidden Memories* game belong to Konami. None of the *Forbidden Memories* ROM is included in this repository.
