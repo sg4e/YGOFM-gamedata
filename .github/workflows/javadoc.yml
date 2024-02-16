@@ -2,8 +2,6 @@ name: Publish Javadoc to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*' # Trigger on tags starting with 'v'
 
