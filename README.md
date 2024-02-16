@@ -112,6 +112,7 @@ This project uses [SemVer](https://semver.org/) versioning. Please use only vers
 If you'd prefer to use the raw game data instead of this library, you can find all of it inside either of the following convenient formats:
 + As a SQLite database in [`sqlite/fm-sqlite3.db`](sqlite/fm-sqlite3.db)
 + As JSON files inside the [`sqlite/json`](sqlite/json) directory
+
 These files are no longer used for this project, as their data has been converted to Java source code, but they are preserved in this repository for their usefulness.
 
 ## Disclaimer
