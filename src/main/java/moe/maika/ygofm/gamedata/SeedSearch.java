@@ -34,8 +34,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * A utility for RNG Manip to search for seeds that produce a given list of draws. Use the builder to
- * configure the search and then call {@link #search()} to perform the search. The search is
+ * A utility to search for seeds that produce a given list of draws from the player's deck.
+ * An example application of this class is to find the seed that produces a given starting hand
+ * and then use that seed to generate the AI's deck and order of cards in the deck. This example
+ * application can be found in the {@code examples/} directory in the repository. In some cases,
+ * the starting hand may not be enough to narrow the search down to a single seed, so multiple
+ * possible AI deck's and permutations will need to be considered, or the search can be rebuilt and
+ * rerun after the player draws another card.
+ * <p>
+ * Use the builder to configure the search and then call {@link #search()} to perform the search. The search is
  * parallelized and will use as many threads as the system has available. The search space is
  * defined by the start and end values, and the initial seed is used as the starting point for the
  * search. The search space is defined by the number of calls to {@code rand()} to consider. The

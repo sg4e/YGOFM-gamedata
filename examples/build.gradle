@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+compileJava {
+    sourceCompatibility = '8'
+    targetCompatibility = '8'
+}
+
+dependencies {
+    implementation project(':FM')
+}
+
+task seedSearch(type: JavaExec) {
+    mainClass = 'moe.maika.ygofm.gamedata.examples.SeedSearchExample'
+    group = 'example'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runAllExamples() {
+    onlyIf { gradle.startParameter.taskNames.contains("runAllExamples") }
+    doLast {
+        def tasksToRun = tasks.withType(JavaExec).findAll { it.group == 'example' }
+        tasksToRun.each { task ->
+            println "Executing task: ${task.name}"
+            task.exec()
+        }
+    }
+}
