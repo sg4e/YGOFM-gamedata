@@ -1,7 +1,8 @@
 plugins {
-    id 'java'
     id 'java-library'
+    id 'signing'
     id 'maven-publish'
+    id('io.github.gradle-nexus.publish-plugin') version '1.1.0'
 }
 
 group = 'moe.maika'
@@ -38,21 +39,66 @@ dependencies {
     testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '2.22.1'
 }
 
-publishing {
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+nexusPublishing {
     repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/sg4e/YGOFM-gamedata")
-            credentials {
-                username = 'sg4e'
-                password = project.findProperty("GITHUB_PACKAGE_PUBLISHING_TOKEN") ?: ''
+        sonatype {  
+            nexusUrl.set(uri("https://central.sonatype.com/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/"))
+        }
+    }
+}
+
+ext.genOutputDir = file("$buildDir/generated-resources")
+
+task generateVersionTxt()  {
+    ext.outputFile = file("$genOutputDir/version.txt")
+    outputs.file(outputFile)
+    doLast {
+        outputFile.text = """GroupId: ${project.group}
+Name: ${project.name}
+Version: $version
+Build-time: ${java.time.LocalDateTime.now()}
+"""
+    }
+}
+
+sourceSets.main.output.dir genOutputDir, builtBy: generateVersionTxt
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from(components.java)
+            pom {
+                name = 'ygofm-gamedata'
+                description = 'API and simulation suite for game data of Yu-Gi-Oh! Forbidden Memories'
+                url = 'https://github.com/sg4e/YGOFM-gamedata'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'sg4e'
+                        name = 'sg4e'
+                    }
+                }
+                scm {
+                    url = 'https://github.com/sg4e/YGOFM-gamedata'
+                    connection = 'scm:git://github.com/sg4e/YGOFM-gamedata.git'
+                    developerConnection = 'scm:git://github.com/sg4e/YGOFM-gamedata.git'
+                }
             }
         }
     }
-    publications {
-        maven(MavenPublication) {
-            artifactId 'ygofm-gamedata'
-		    from components.java
-        }
-    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }
