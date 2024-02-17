@@ -78,30 +78,17 @@ Builds of this project are published on GitHub Packages.
 
 Use with Maven:
 ```xml
-<distributionManagement>
-   <repository>
-     <id>github</id>
-     <name>GitHub sg4e Apache Maven Packages</name>
-     <url>https://maven.pkg.github.com/sg4e/YGOFM-gamedata</url>
-   </repository>
-</distributionManagement>
 <dependency>
-  <groupId>moe.maika</groupId>
-  <artifactId>ygofm-gamedata</artifactId>
-  <version>1.1.0</version>
+    <groupId>moe.maika</groupId>
+    <artifactId>ygofm-gamedata</artifactId>
+    <version>1.1.0</version>
 </dependency>
 ```
 
 Use with Gradle:
 ```groovy
 dependencies {
-    implementation("moe.maika:ygofm-gamedata:1.1.0")
-}
-
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/sg4e/YGOFM-gamedata")
-   }
+    implementation 'moe.maika:ygofm-gamedata:1.1.0'
 }
 ```
 
