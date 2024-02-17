@@ -2,7 +2,6 @@ plugins {
     id 'java-library'
     id 'signing'
     id 'maven-publish'
-    id('io.github.gradle-nexus.publish-plugin') version '1.1.0'
 }
 
 group = 'moe.maika'
@@ -44,15 +43,6 @@ java {
     withSourcesJar()
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {  
-            nexusUrl.set(uri("https://central.sonatype.com/"))
-            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/"))
-        }
-    }
-}
-
 ext.genOutputDir = file("$buildDir/generated-resources")
 
 task generateVersionTxt()  {
@@ -68,6 +58,35 @@ Build-time: ${java.time.LocalDateTime.now()}
 }
 
 sourceSets.main.output.dir genOutputDir, builtBy: generateVersionTxt
+
+/*
+How to actually publish on Maven Central:
+
+Sonatype, which allows OSS projects to publish to Maven Central, recently discontinued their old service
+and replaced it with a completely new one. The new one is required for all new projects registered
+after a certain date. All of the old tooling uses the old service, and how to actually publish
+your artifacts is extremely obtuse. The unofficial plugins to publish to Sonatype either didn't
+work or I couldn't figure them out. Sonatype says gradle support is "on their roadmap", but
+didn't think it important enough to roll out before discontinuing the old service. I'll document
+how I managed to publish after hours of trial and error, because otherwise I would never figure
+it out again. Also, as I sidenote, I originally publish to GitHub Packages, which was a lot easier,
+but in the year 2024 they still don't have a way to download artifacts without a token, so I
+find that makes their service completely useless for OSS.
+
+1. Put signing.keyId, signing.password, and signing.secretKeyRingFile in your gradle.properties.
+2. Run publishToMavenLocal. In your ~/.m2/repository, you should see your artifacts. You'll find
+inside the .asc signature files, but the checksum files will be missing. Sonatype will reject
+your artifacts without these. Maven doesn't generate these for local for some reason, and the gradle
+people will tell you since that's what maven does, that's what gradle should do. I wrote a script
+that generates them and commit it to the repo.
+3. Generate your checksum files (.md5 and .sha1).
+4. Sonatype insists on this directory structure:
+moe/maika/ygofm-gamedata/[version]/ygofm-gamedata-[version].jar (i.e. all your stuff)
+so replicate that directory structure.
+5. If you didn't submit your signing key to a key server, do that now.
+6. Go to https://central.sonatype.com/publishing/deployments and upload it.
+7. Hope that it passes verification lol.
+*/
 
 publishing {
     publications {
